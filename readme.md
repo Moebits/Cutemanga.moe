@@ -1,6 +1,6 @@
-# CuteManga.moe
+# Cutemanga.moe
 
-CuteManga is a website where you can read manga with selectable text (OCR). It is a fun way to study japanese. The manga is 
+Cutemanga is a website where you can read manga with selectable text (OCR). It is a fun way to study Japanese. The manga is 
 generated with [MangaOCR](https://github.com/kha-white/manga-ocr), and specifically we use [Mokuro](https://github.com/kha-white/mokuro) 
 and [Mokuro2Pdf](https://github.com/Kartoffel0/Mokuro2Pdf) scripts to OCR the manga and convert them to PDF files. 
 
@@ -27,3 +27,26 @@ You can change the reading direction between top to bottom (most common), or rig
 Support the artist/publisher by buying the manga/anime from their website (a link is provided). 
 
 ![Image](https://github.com/Tenpi/CuteManga.moe/blob/main/assets/images/officialwebsite.png?raw=true)
+
+### Tech Stack
+
+- Languages: Typescript, LESS, HTML
+- Front-end: React 
+- Bundler: Webpack
+
+### Self Hosting
+
+First install Node.js if you don't have it already. 
+
+https://nodejs.org/en/
+
+To reduce costs, the whole "database" is stored in a single `database.js` file instead of using a 
+real database. This works for me because I expect the content library to get that big.
+
+You can look at the `database.example.js` to see the structure of the database and populate it on your own.
+
+Clone the code from this repository and then install dependencies with `npm install`. \
+Start the web server with `npm start`. 
+
+All the web server does is load the `index.html` file, there is no real backend so this can be hosted as a static 
+website. 
