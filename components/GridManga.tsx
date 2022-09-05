@@ -53,7 +53,7 @@ const GridManga: React.FunctionComponent<Props> = (props) => {
         } else {
             size = 10
         }
-        if (mobile) size -= 5
+        if (mobile) size -= 7
         return `${size}px`
     }
 

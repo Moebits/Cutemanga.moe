@@ -198,7 +198,7 @@ const PDFControls: React.FunctionComponent<Props> = (props) => {
                 {/* <img className="pdf-controls-icon" src={bookmark}/>  */}
                 {/* <img className="pdf-controls-icon" src={dictionary}/> */}
                 <img className="pdf-controls-icon" src={showEn ? englishToJapanese : japaneseToEnglish} onClick={() => setShowEn((prev: boolean) => !prev)}/>
-                <img className="pdf-controls-icon" src={support} onClick={triggerSupport}/>
+                {!mobile ? <img className="pdf-controls-icon" src={support} onClick={triggerSupport}/> : null}
                 {/* <img className="pdf-controls-icon" src={comment}/> */}
             </div>
         </div>

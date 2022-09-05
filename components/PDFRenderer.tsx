@@ -2,7 +2,7 @@ import React, {useContext, useEffect, useState, useRef, useMemo, createRef, forw
 import {SizeMe} from "react-sizeme"
 import {useHistory} from "react-router-dom"
 import {HashLink as Link} from "react-router-hash-link"
-import {EnableDragContext, PageContext, ZoomContext, NumPagesFlagContext, 
+import {EnableDragContext, PageContext, ZoomContext, NumPagesFlagContext, MobileContext,
 ShowEnContext, HorizontalContext, ShowThumbnailsContext, NavigateFlagContext} from "../Context"
 import {Document, Page, pdfjs, PDFPageProxy} from "react-pdf"
 import functions from "../structures/Functions"
@@ -53,6 +53,7 @@ const PDFRenderer: React.FunctionComponent<Props> = (props) => {
     const {enableDrag, setEnableDrag} = useContext(EnableDragContext)
     const {page, setPage} = useContext(PageContext)
     const {zoom, setZoom} = useContext(ZoomContext)
+    const {mobile, setMobile} = useContext(MobileContext)
     const {numPagesFlag, setNumPagesFlag} = useContext(NumPagesFlagContext)
     const [numPagesJA, setNumPagesJA] = React.useState(0)
     const [numPagesEN, setNumPagesEN] = React.useState(0)
@@ -261,17 +262,26 @@ const PDFRenderer: React.FunctionComponent<Props> = (props) => {
         })
     }, [page, horizontal])
 
+    const getWidth = () => {
+        if (mobile) return 400
+        if (horizontal) {
+            return 1000
+        } else {
+            return 1200
+        }
+    }
+
     return (
         <div className={`pdf-renderer drag ${horizontal ? "pdf-renderer-horizontal" : ""}`} ref={rootRef} style={{maxHeight: horizontal ? 773 : 1600}}>
             {generateThumbnails()}
             <Document renderMode="svg" className={`pdf-document ${!showEn ? "hidden" : ""} ${horizontal ? "horizontal" : ""}`} file={enPDF} onLoadSuccess={onLoadSuccessEN} noData="" loading="">
                 {visibilitiesEN.map((visible: boolean, index: number) => (
-                    <PDFPage className="pdf-page" ref={pageRefsEN[index]} key={`pageEN_${index + 1}`} pageIndex={index} visible={visible} width={horizontal ? 1000 : 1200 } scale={getScale()}/>
+                    <PDFPage className="pdf-page" ref={pageRefsEN[index]} key={`pageEN_${index + 1}`} pageIndex={index} visible={visible} width={getWidth()} scale={getScale()}/>
                 ))}
             </Document>
             <Document renderMode="svg" className={`pdf-document ${showEn ? "hidden" : ""} ${horizontal ? "horizontal" : ""}`} file={jaPDF} onLoadSuccess={onLoadSuccessJA} noData="" loading="">
                 {visibilitiesJA.map((visible: boolean, index: number) => (
-                    <PDFPage className="pdf-page" ref={pageRefsJA[index]} key={`pageJA_${index + 1}`} pageIndex={index} visible={visible} width={horizontal ? 1000 : 1200 } scale={getScale()}/>
+                    <PDFPage className="pdf-page" ref={pageRefsJA[index]} key={`pageJA_${index + 1}`} pageIndex={index} visible={visible} width={getWidth()} scale={getScale()}/>
                 ))}
             </Document>
         </div>
