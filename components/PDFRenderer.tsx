@@ -186,6 +186,7 @@ const PDFRenderer: React.FunctionComponent<Props> = (props) => {
     }
 
     const generateThumbnails = () => {
+        if (mobile) return null
         const thumbsToRenderJA = Math.min(thumbsRenderedJA + 1, numPagesJA)
         const thumbsToRenderEN = Math.min(thumbsRenderedEN + 1, numPagesEN)
         return (
