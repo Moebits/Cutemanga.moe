@@ -40,14 +40,14 @@ const TitleBar: React.FunctionComponent = (props) => {
     const [activeDropdown, setActiveDropdown] = useState(false)
     const history = useHistory()
 
-    useEffect(() => {
+    /*useEffect(() => {
         if (typeof window === "undefined") return
         for (let i = 0; i < Object.keys(colorList).length; i++) {
             const key = Object.keys(colorList)[i]
             const color = Object.values(colorList)[i]
             document.documentElement.style.setProperty(key, functions.rotateColor(color, hue, saturation, lightness))
         }
-    }, [hue, saturation, lightness])
+    }, [hue, saturation, lightness])*/
 
     const resetFilters = () => {
         setHue(180)

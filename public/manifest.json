@@ -4,9 +4,9 @@
     "description": "Cutemanga is a website where you can read various manga with selectable text (OCR). It is a fun way to study japanese!",
     "icons": [
       {
-        "src": "assets/purple/favicon.png",
+        "src": "assets/icons/favicon.png",
         "sizes": "128x128",
-        "type": "image/gif"
+        "type": "image/png"
       }
     ],
     "start_url": ".",
