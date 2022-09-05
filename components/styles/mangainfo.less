@@ -1,0 +1,69 @@
+@import "../../index.less";
+
+.manga-info {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    background-color: transparent;
+}
+
+.manga-info-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    margin: 10px 20px;
+}
+
+.manga-info-img-container {
+    display: flex;
+    flex-direction: column;
+    margin-right: 10px;
+}
+
+.manga-info-img {
+    height: 350px;
+    width: auto;
+}
+
+.manga-info-text-container {
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+}
+
+.manga-info-text-row {
+    display: block;
+    word-wrap: break-word;
+}
+
+.manga-info-text-title {
+    font-family: Mangaka, sans-serif;
+    font-size: 40px;
+    color: var(--text);
+}
+
+.manga-info-text-category {
+    font-family: Mangaka, sans-serif;
+    font-size: 20px;
+    color: var(--text);
+    margin-right: 10px;
+}
+
+.manga-info-text-content {
+    font-family: Arial, sans-serif;
+    font-size: 20px;
+    color: var(--text);
+}
+
+.manga-info-text-content-link {
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    font-size: 20px;
+    color: var(--text-alt);
+    &:hover {
+        color: white;
+        cursor: pointer;
+    }
+}

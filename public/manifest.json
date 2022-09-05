@@ -1,0 +1,16 @@
+{
+    "short_name": "cutemanga.moe",
+    "name": "Cutemanga.moe",
+    "description": "CuteManga is a website where you can read various manga with selectable text (OCR). It is a fun way to study japanese!",
+    "icons": [
+      {
+        "src": "assets/purple/favicon.png",
+        "sizes": "128x128",
+        "type": "image/gif"
+      }
+    ],
+    "start_url": ".",
+    "display": "standalone",
+    "theme_color": "#000000",
+    "background_color": "#000000"
+  }

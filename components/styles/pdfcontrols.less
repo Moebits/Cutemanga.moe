@@ -1,0 +1,104 @@
+@import "../../index.less";
+
+.pdf-controls {
+    position: sticky;
+    z-index: 2000;
+    top: 0px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: @pdf-controls-height;
+    background-color: var(--pdfControlsBG);
+}
+
+.pdf-controls-box {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-right: 10px;
+}
+
+.pdf-controls-icon {
+    height: 30px;
+    width: auto;
+    margin-left: 10px;
+    &:hover {
+        cursor: pointer;
+        filter: invert(1);
+    }
+}
+
+.pdf-controls-icon-mid {
+    height: 25px;
+    width: auto;
+    margin-left: 10px;
+    &:hover {
+        cursor: pointer;
+        filter: invert(1);
+    }
+}
+
+.pdf-controls-icon-small {
+    height: 20px;
+    width: auto;
+    margin-left: 10px;
+    &:hover {
+        cursor: pointer;
+        filter: invert(1);
+    }
+}
+
+.pdf-controls-icon-small-alt {
+    height: auto;
+    width: 20px;
+    margin-left: 10px;
+    &:hover {
+        cursor: pointer;
+        filter: invert(1);
+    }
+}
+
+.pdf-controls-page-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-left: 10px;
+}
+
+.pdf-controls-page-text {
+    font-family: Mangaka, sans-serif;
+    font-size: 20px;
+    color: black;
+}
+
+.pdf-controls-page-input {
+    height: 30px;
+    width: 60px;
+    background-color: var(--sortbarSearchBG);
+    border: 3px solid black;
+    font-family: Mangaka, sans-serif;
+    font-size: 20px;
+    color: black;
+    border-radius: 4px;
+    padding: 5px;
+    margin-left: 10px;
+    margin-right: 10px;
+    text-align: right;
+}
+
+.pdf-controls-zoom-input {
+    height: 30px;
+    width: 80px;
+    background-color: var(--sortbarSearchBG);
+    border: 3px solid black;
+    font-family: Mangaka, sans-serif;
+    font-size: 20px;
+    color: black;
+    border-radius: 4px;
+    padding: 5px;
+    margin-left: 10px;
+    text-align: right;
+}

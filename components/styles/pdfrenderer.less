@@ -1,0 +1,106 @@
+@import "../../index.less";
+
+.pdf-renderer {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    overflow: auto;
+}
+
+.pdf-renderer-horizontal {
+    direction: rtl;
+}
+
+.pdf-document {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.horizontal {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    width: 100%;
+    direction: rtl;
+}
+
+.hidden {
+    opacity: 0;
+    position: absolute;
+    z-index: -1000;
+    pointer-events: none;
+}
+
+.pdf-thumbnail-container {
+    position: fixed;
+    z-index: 1500;
+    top: @pdf-controls-height;
+    left: 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 10%;
+    max-height: 800px;
+    overflow: auto;
+    background-color: var(--background);
+    transform-origin: left;
+    transform: translateX(0px);
+    transition: transform 0.3s;
+}
+
+.thumbnail-hidden {
+    //opacity: 0;
+    //position: absolute;
+    //z-index: -1000;
+    pointer-events: none;
+    transform-origin: left;
+    transform: translateX(-160px);
+    transition: transform 0.3s;
+}
+
+.thumbnail-horizontal {
+    position: absolute;
+    z-index: 1500;
+    top: 0px;
+    left: 0px;
+    direction: rtl;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    width: 100%;
+    margin-left: 0px;
+    overflow: auto;
+    background-color: var(--background);
+    transform-origin: top;
+    transform: translateY(0px);
+    transition: transform 0.3s;
+}
+
+.thumbnail-hidden-horizontal {
+    opacity: 0;
+    position: absolute;
+    z-index: -1000;
+    pointer-events: none;
+    transform-origin: top;
+    transform: translateY(160px);
+    transition: transform 0.3s;
+}
+
+.pdf-thumbnail {
+    margin: 10px;
+    &:hover {
+        cursor: pointer;
+        filter: brightness(120%);
+        border: 3px solid var(--gridButton);
+    }
+}
+
+.selected {
+    border: 3px solid var(--gridButton);
+}
