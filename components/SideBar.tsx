@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState, useReducer} from "react"
 import {useHistory} from "react-router-dom"
-import {EnableDragContext, SearchContext, SearchFlagContext, SidebarSortContext, GenreContext} from "../Context"
+import {EnableDragContext, SearchContext, SearchFlagContext, SidebarSortContext, GenreContext, MobileContext} from "../Context"
 import recent from "../assets/icons/recent.png"
 import genreIcon from "../assets/icons/genre.png"
 import searchIcon from "../assets/icons/search.png"
@@ -15,6 +15,7 @@ const SideBar: React.FunctionComponent= (props) => {
     const {searchFlag, setSearchFlag} = useContext(SearchFlagContext)
     const {sidebarSort, setSidebarSort} = useContext(SidebarSortContext)
     const {genre, setGenre} = useContext(GenreContext)
+    const {mobile, setMobile} = useContext(MobileContext)
     const [showSearchBar, setShowSearchBar] = useState(false)
     const history = useHistory()
 
@@ -77,6 +78,8 @@ const SideBar: React.FunctionComponent= (props) => {
         if (history.location.pathname !== "/" && history.location.pathname !== "/manga" && history.location.pathname !== "/home") history.push("/manga")
         setSearchFlag(true)
     }
+
+    if (mobile) return null
 
     return (
         <>

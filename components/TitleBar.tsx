@@ -2,7 +2,7 @@ import React, {useContext, useEffect, useState} from "react"
 import {useHistory} from "react-router-dom"
 import {HashLink as Link} from "react-router-hash-link"
 import favicon from "../assets/icons/favicon.png"
-import {EnableDragContext, HueContext, SaturationContext, LightnessContext} from "../Context"
+import {EnableDragContext, HueContext, SaturationContext, LightnessContext, MobileContext} from "../Context"
 import functions from "../structures/Functions"
 import color from "../assets/icons/color.png"
 import Slider from "react-slider"
@@ -38,6 +38,7 @@ const TitleBar: React.FunctionComponent = (props) => {
     const {saturation, setSaturation} = useContext(SaturationContext)
     const {lightness, setLightness} = useContext(LightnessContext)
     const [activeDropdown, setActiveDropdown] = useState(false)
+    const {mobile, setMobile} = useContext(MobileContext)
     const history = useHistory()
 
     /*useEffect(() => {
@@ -88,7 +89,7 @@ const TitleBar: React.FunctionComponent = (props) => {
             </div>
             <div className="titlebar-container">
                 <div className="titlebar-nav-container">
-                    <span className="titlebar-nav-text" onClick={() => history.push("/manga")}>Manga</span>
+                    {!mobile ? <span className="titlebar-nav-text" onClick={() => history.push("/manga")}>Manga</span> : null}
                     {/* <span className="titlebar-nav-text" onClick={() => window.open("https://cuteanime.moe", "_blank")}>Anime</span> */}
                     <span className="titlebar-nav-text" onClick={() => history.push("/about")}>About</span>
                 </div>

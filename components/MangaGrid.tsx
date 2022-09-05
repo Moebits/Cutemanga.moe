@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from "react"
 import {useHistory} from "react-router-dom"
 import {HashLink as Link} from "react-router-hash-link"
-import {EnableDragContext, SearchContext, SortContext, SearchFlagContext, GenreContext, ReverseContext} from "../Context"
+import {EnableDragContext, SearchContext, SortContext, SearchFlagContext, GenreContext, ReverseContext, MobileContext} from "../Context"
 import functions from "../structures/Functions"
 import GridManga from "./GridManga"
 import pageLeft from "../assets/icons/pageLeft.png"
@@ -17,6 +17,7 @@ const MangaGrid: React.FunctionComponent = (props) => {
     const {genre, setGenre} = useContext(SearchContext)
     const {sort, setSort} = useContext(SortContext)
     const {reverse, setReverse} = useContext(ReverseContext)
+    const {mobile, setMobile} = useContext(MobileContext)
     const [mangaList, setMangaList] = useState([]) as any
     const history = useHistory()
 
@@ -36,9 +37,10 @@ const MangaGrid: React.FunctionComponent = (props) => {
 
     const generateJSX = () => {
         let jsx = [] as any
+        let step = mobile ? 3 : 4
         for (let i = 0; i < mangaList.length; i+=4) {
             let gridImages = [] as any
-            for (let j = 0; j < 4; j++) {
+            for (let j = 0; j < step; j++) {
                 const k = i+j
                 if (!mangaList[k]) break
                 gridImages.push(<GridManga img={mangaList[k].cover} title={mangaList[k].title} id={mangaList[k].id} key={k}/>)

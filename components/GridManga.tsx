@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState, useRef} from "react"
 import {useHistory} from "react-router-dom"
 import {HashLink as Link} from "react-router-hash-link"
-import {EnableDragContext} from "../Context"
+import {EnableDragContext, MobileContext} from "../Context"
 import functions from "../structures/Functions"
 import read from "../assets/icons/read.png"
 import bookmark from "../assets/icons/bookmark.png"
@@ -15,6 +15,7 @@ interface Props {
 
 const GridManga: React.FunctionComponent<Props> = (props) => {
     const {enableDrag, setEnableDrag} = useContext(EnableDragContext)
+    const {mobile, setMobile} = useContext(MobileContext)
     const [drag, setDrag] = useState(false)
     const [hover, setHover] = useState(false)
     const imageRef = useRef<HTMLImageElement>(null)
@@ -52,6 +53,7 @@ const GridManga: React.FunctionComponent<Props> = (props) => {
         } else {
             size = 10
         }
+        if (mobile) size -= 5
         return `${size}px`
     }
 

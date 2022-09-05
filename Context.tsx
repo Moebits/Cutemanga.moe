@@ -18,6 +18,7 @@ export const ReverseContext = React.createContext<any>(null)
 export const HueContext = React.createContext<any>(null)
 export const SaturationContext = React.createContext<any>(null)
 export const LightnessContext = React.createContext<any>(null)
+export const MobileContext = React.createContext<any>(null)
 
 const Context: React.FunctionComponent = (props) => {
     const [page, setPage] = useState("1")

@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from "react"
 import {useHistory} from "react-router-dom"
 import {HashLink as Link} from "react-router-hash-link"
-import {EnableDragContext, PageContext, ZoomContext, NumPagesFlagContext, 
+import {EnableDragContext, PageContext, ZoomContext, NumPagesFlagContext, MobileContext,
 ShowEnContext, HorizontalContext, ShowThumbnailsContext, NavigateFlagContext} from "../Context"
 import functions from "../structures/Functions"
 import back from "../assets/icons/back.png"
@@ -37,6 +37,7 @@ const PDFControls: React.FunctionComponent<Props> = (props) => {
     const {horizontal, setHorizontal} = useContext(HorizontalContext)
     const {showEn, setShowEn} = useContext(ShowEnContext)
     const {showThumbnails, setShowThumbnails} = useContext(ShowThumbnailsContext)
+    const {mobile, setMobile} = useContext(MobileContext)
     const {navigateFlag, setNavigateFlag} = useContext(NavigateFlagContext)
     const history = useHistory()
 
@@ -50,6 +51,13 @@ const PDFControls: React.FunctionComponent<Props> = (props) => {
         if (savedShowEn) setShowEn(JSON.parse(savedShowEn))
         if (savedZoom) setZoom(savedZoom)
     }, [])
+
+    useEffect(() => {
+        if (mobile) {
+            setShowThumbnails(false)
+            setZoom("100%")
+        }
+    }, [mobile])
 
     useEffect(() => {
         localStorage.setItem("showThumbnails", JSON.stringify(showThumbnails))
@@ -166,7 +174,7 @@ const PDFControls: React.FunctionComponent<Props> = (props) => {
     return (
         <div className="pdf-controls" onMouseEnter={() => setEnableDrag(false)}>
             <div className="pdf-controls-box">
-                <img className="pdf-controls-icon-small" src={hamburger} onClick={() => setShowThumbnails((prev: boolean) => !prev)}/>
+                {!mobile ? <img className="pdf-controls-icon-small" src={hamburger} onClick={() => setShowThumbnails((prev: boolean) => !prev)}/> : null}
                 <div className="pdf-controls-page-container">
                     <span className="pdf-controls-page-text">Page:</span>
                     <input className="pdf-controls-page-input" type="text" spellCheck={false} value={page} onChange={(event) => setPage(event.target.value)} onBlur={() => updatePage()}/>
@@ -175,6 +183,7 @@ const PDFControls: React.FunctionComponent<Props> = (props) => {
                 <img className="pdf-controls-icon-mid" src={rightToLeft} onClick={() => changeHorizontal(true)}/>
                 <img className="pdf-controls-icon-mid" src={topToBottom} onClick={() => changeHorizontal(false)}/>
             </div>
+            {!mobile ?
             <div className="pdf-controls-box">
                 <img className="pdf-controls-icon-small-alt" src={zoomOut} onClick={triggerZoomOut}/>
                 <img className="pdf-controls-icon-small" src={zoomIn} onClick={triggerZoomIn}/>
@@ -182,7 +191,7 @@ const PDFControls: React.FunctionComponent<Props> = (props) => {
                 <img className="pdf-controls-icon-small" src={reset} onClick={() => setZoom("100%")} style={{height: "13px"}}/>
                 <img className="pdf-controls-icon-small" src={prevPage} onClick={triggerPrev}/>
                 <img className="pdf-controls-icon-small" src={nextPage} onClick={triggerNext}/>
-            </div>
+            </div> : null}
             <div className="pdf-controls-box">
                 <img className="pdf-controls-icon" src={back} onClick={triggerBack}/>
                 {/* <img className="pdf-controls-icon" src={info}/> */}

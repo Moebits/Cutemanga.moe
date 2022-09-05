@@ -645,7 +645,7 @@ export default class Functions {
 
     public static websiteName = (url: string) => {
         url = url.replace("en.", "")
-        const base = url.match(/(?<=https?\:\/\/)(.*?)(?=\.)/)?.[0] ?? ""
+        const base = url.match(/(https?\:\/\/)(.*?)(?=\.)/)?.[0].split("//")[1] ?? ""
         return Functions.toProperCase(base)
     }
 

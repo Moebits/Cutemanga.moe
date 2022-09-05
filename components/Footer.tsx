@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from "react"
 import {useHistory} from "react-router-dom"
 import {HashLink as Link} from "react-router-hash-link"
-import {EnableDragContext, DonationFlagContext} from "../Context"
+import {EnableDragContext, DonationFlagContext, MobileContext} from "../Context"
 import functions from "../structures/Functions"
 import tos from "../assets/icons/tos.png"
 import contact from "../assets/icons/contact.png"
@@ -13,6 +13,7 @@ import "./styles/footer.less"
 const Footer: React.FunctionComponent = (props) => {
     const {enableDrag, setEnableDrag} = useContext(EnableDragContext)
     const {donationFlag, setDonationFlag} = useContext(DonationFlagContext)
+    const {mobile, setMobile} = useContext(MobileContext)
     const history = useHistory()
 
     const getFilter = () => {
@@ -31,19 +32,19 @@ const Footer: React.FunctionComponent = (props) => {
                     </div>
                     <div className="footer-link-box" onClick={() => history.push(`/tos`)}>
                         <img className="footer-link-img" src={tos} style={{filter: getFilter()}}/>
-                        <span className="footer-link-text">TOS/Privacy Policy</span>
+                        {!mobile ? <span className="footer-link-text">TOS/Privacy Policy</span> : null}
                     </div>
                     <div className="footer-link-box" onClick={() => window.open("mailto:cutemanga.moe@gmail.com")}>
                         <img className="footer-link-img" src={contact}  style={{filter: getFilter()}}/>
-                        <span className="footer-link-text">Contact</span>
+                        {!mobile ? <span className="footer-link-text">Contact</span> : null}
                     </div>
                     <div className="footer-link-box" onClick={() => window.open(pack.repository.url, "_blank")}>
                         <img className="footer-link-img" src={code}  style={{filter: getFilter()}}/>
-                        <span className="footer-link-text">Website Code</span>
+                        {!mobile ? <span className="footer-link-text">Website Code</span> : null}
                     </div>
                     <div className="footer-link-box" onClick={() => setDonationFlag(true)}>
                         <img className="footer-link-img" src={donate} style={{filter: getFilter()}}/>
-                        <span className="footer-link-text">Donate</span>
+                        {!mobile ? <span className="footer-link-text">Donate</span> : null}
                     </div>
                 </div>
                 <span className="footer-link-text-small">©{new Date().getFullYear()} Moepi</span>
