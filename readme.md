@@ -1,6 +1,6 @@
 # Cutemanga.moe
 
-Cutemanga is a website where you can read manga with selectable text (OCR). It is a fun way to study Japanese. The manga is 
+Cutemanga is a website where you can read manga with selectable text (OCR) with a dictionary extension like Yomichan. It is a fun way to study Japanese. The manga is 
 generated with [MangaOCR](https://github.com/kha-white/manga-ocr), and specifically we use [Mokuro](https://github.com/kha-white/mokuro) 
 and [Mokuro2Pdf](https://github.com/Kartoffel0/Mokuro2Pdf) scripts to OCR the manga and convert them to PDF files. 
 
