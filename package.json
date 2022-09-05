@@ -1,10 +1,11 @@
 {
   "name": "cutemanga.moe",
   "version": "1.0.0",
-  "description": "Cute manga is a website where you can read manga with selectable text (OCR), it is a fun way to study japanese.",
+  "description": "CuteManga is a website where you can read manga with selectable text (OCR), it is a fun way to study japanese.",
   "main": "dist/server.js",
   "scripts": {
     "start": "npm run clean && webpack && node dist/server.js",
+    "build": "npm run clean && webpack",
     "server": "webpack && npm run pm2",
     "pm2": "pm2 stop all && pm2 start dist/server.js",
     "clean": "del-cli ./dist"

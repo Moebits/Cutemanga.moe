@@ -43,8 +43,7 @@ app.get("/*", function(req, res) {
     res.setHeader("Content-Type", mime.getType(req.path) ?? "")
     res.header("Access-Control-Allow-Origin", "*")
     const document = fs.readFileSync(path.join(__dirname, "./dist/index.html"), {encoding: "utf-8"})
-    const html = renderToString(<Router location={req.url}><App/></Router>)
-    res.status(200).send(document?.replace(`<div id="root"></div>`, `<div id="root">${html}</div>`))
+    res.status(200).send(document)
 })
 
 const run = async () => {
