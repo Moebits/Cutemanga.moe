@@ -72,6 +72,7 @@
     font-family: Mangaka, sans-serif;
     font-size: 20px;
     color: black;
+    white-space: nowrap;
 }
 
 .pdf-controls-page-input {
@@ -101,4 +102,11 @@
     padding: 5px;
     margin-left: 10px;
     text-align: right;
+}
+
+
+@media screen and (max-width: 500px) {
+    .pdf-controls-page-input {
+        width: 40px;
+    }
 }

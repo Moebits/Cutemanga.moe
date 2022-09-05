@@ -37,9 +37,6 @@ app.use(express.static(path.join(__dirname, "./dist"), {index: false}))
 app.use("/assets", express.static(path.join(__dirname, "./assets")))
 
 app.get("/*", function(req, res) {
-    if (!req.hostname.includes("cutemanga") && !req.hostname.includes("localhost") && !req.hostname.includes("192.168.68")) {
-      res.redirect(301, `https://cutemanga.moe${req.path}`)
-    }
     res.setHeader("Content-Type", mime.getType(req.path) ?? "")
     res.header("Access-Control-Allow-Origin", "*")
     const document = fs.readFileSync(path.join(__dirname, "./dist/index.html"), {encoding: "utf-8"})
