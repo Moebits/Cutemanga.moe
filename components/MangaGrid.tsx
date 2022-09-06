@@ -43,7 +43,7 @@ const MangaGrid: React.FunctionComponent = (props) => {
             for (let j = 0; j < step; j++) {
                 const k = i+j
                 if (!mangaList[k]) break
-                gridImages.push(<GridManga img={mangaList[k].cover} title={mangaList[k].title} id={mangaList[k].id} key={k}/>)
+                gridImages.push(<GridManga img={mangaList[k].cover} title={mangaList[k].title} id={mangaList[k].id} key={k} refresh={updateMangaList}/>)
             }
             jsx.push(
                 <div className="manga-grid-row">

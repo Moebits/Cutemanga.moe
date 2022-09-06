@@ -5,12 +5,14 @@ import {EnableDragContext, MobileContext} from "../Context"
 import functions from "../structures/Functions"
 import read from "../assets/icons/read.png"
 import bookmark from "../assets/icons/bookmark.png"
+import unbookmark from "../assets/icons/unbookmark.png"
 import "./styles/gridmanga.less"
 
 interface Props {
     img: string 
     title: string
     id: string
+    refresh: () => void
 }
 
 const GridManga: React.FunctionComponent<Props> = (props) => {
@@ -18,6 +20,7 @@ const GridManga: React.FunctionComponent<Props> = (props) => {
     const {mobile, setMobile} = useContext(MobileContext)
     const [drag, setDrag] = useState(false)
     const [hover, setHover] = useState(false)
+    const [saved, setSaved] = useState(false)
     const imageRef = useRef<HTMLImageElement>(null)
     const history = useHistory()
 
@@ -84,6 +87,28 @@ const GridManga: React.FunctionComponent<Props> = (props) => {
         }
     }
 
+    const save = () => {
+        let bookmarkStr = localStorage.getItem("bookmarks")
+        if (!bookmarkStr) bookmarkStr = "{}"
+        const bookmarks = JSON.parse(bookmarkStr)
+        if (bookmarks[props.id]) {
+            delete bookmarks[props.id]
+            setSaved(false)
+        } else {
+            bookmarks[props.id] = true
+            setSaved(true)
+        }
+        localStorage.setItem("bookmarks", JSON.stringify(bookmarks))
+        props.refresh()
+    }
+
+    useEffect(() => {
+        let bookmarkStr = localStorage.getItem("bookmarks")
+        if (!bookmarkStr) bookmarkStr = "{}"
+        const bookmarks = JSON.parse(bookmarkStr)
+        setSaved(bookmarks[props.id] === true)
+    }, [props.id])
+
     return (
         <div className="grid-manga">
             <div className="grid-manga-container">
@@ -93,20 +118,20 @@ const GridManga: React.FunctionComponent<Props> = (props) => {
                         <span className="grid-manga-text" style={{fontSize: getFontSize()}}>{props.title}</span>
                     </div>
                 </div>
-                {/* <div className="grid-manga-button-container">
+                {!mobile ? <div className="grid-manga-button-container">
                     <button className="grid-manga-button" onClick={() => history.push(`/manga/${props.id}`)} onAuxClick={onClick}>
                         <span className="grid-manga-button-hover">
                             <img className="grid-manga-button-img" src={read}/>
                             <span className="grid-manga-button-text">Read</span>
                         </span>
                     </button>
-                    <button className="grid-manga-button">
+                    <button className="grid-manga-button" onClick={save}>
                         <span className="grid-manga-button-hover">
-                            <img className="grid-manga-button-img" src={bookmark}/>
-                            <span className="grid-manga-button-text">Save</span>
+                            <img className="grid-manga-button-img" src={saved ? unbookmark : bookmark}/>
+                            <span className="grid-manga-button-text">{saved ? "Unsave" : "Save"}</span>
                         </span>
                     </button>
-                </div> */}
+                </div> : null}
             </div>
         </div>
     )

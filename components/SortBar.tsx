@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from "react"
 import {useHistory} from "react-router-dom"
 import {HashLink as Link} from "react-router-hash-link"
-import {EnableDragContext, SidebarSortContext, SearchContext, SearchFlagContext, SortContext, ReverseContext} from "../Context"
+import {EnableDragContext, SidebarSortContext, SearchContext, SearchFlagContext, SortContext, ReverseContext, MobileContext} from "../Context"
 import functions from "../structures/Functions"
 import date from "../assets/icons/date.png"
 import alphabetic from "../assets/icons/alphabetic.png"
@@ -22,6 +22,7 @@ const SortBar: React.FunctionComponent<Props> = (props) => {
     const {sidebarSort, setSidebarSort} = useContext(SidebarSortContext)
     const {sort, setSort} = useContext(SortContext)
     const {reverse, setReverse} = useContext(ReverseContext)
+    const {mobile, setMobile} = useContext(MobileContext)
     const history = useHistory()
 
     useEffect(() => {
@@ -62,12 +63,12 @@ const SortBar: React.FunctionComponent<Props> = (props) => {
                         <span className="sortbar-button-text">Alphabetic</span>
                     </span>
                 </button>
-                {/* <button className="sortbar-button" onClick={() => setSort("bookmarks")}>
+                {!mobile ? <button className="sortbar-button" onClick={() => setSort("bookmarks")}>
                     <span className="sortbar-button-hover" style={{filter: sort === "bookmarks" ? getFilter() : ""}}>
                         <img className="sortbar-button-img" src={bookmark}/>
                         <span className="sortbar-button-text">Bookmarks</span>
                     </span>
-                </button> */}
+                </button> : null}
                 <button className="sortbar-button" onClick={() => setReverse((prev: boolean) => !prev)}>
                     <span className="sortbar-button-hover">
                         <img className="sortbar-button-img" src={reverse ? sortReverseIcon : sortIcon} style={{filter: getFilter()}}/>

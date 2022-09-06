@@ -24,7 +24,13 @@ export default class DatabaseFunctions {
         if (sort === "alphabetic") {
             mangas = mangas.sort((a, b) => a.title.localeCompare(b.title))
         } else if (sort === "bookmarks") {
-            mangas = []
+            let bookmarkStr = localStorage.getItem("bookmarks")
+            if (!bookmarkStr) bookmarkStr = "{}"
+            const bookmarks = JSON.parse(bookmarkStr)
+            mangas = mangas.filter((m) => {
+                if (bookmarks[m.id] === true) return true 
+                return false
+            })
         } else {
             mangas = mangas.sort((a, b) => Date.parse(a.added) < Date.parse(b.added) ? 1 : -1)
         }

@@ -6,6 +6,7 @@ ShowEnContext, HorizontalContext, ShowThumbnailsContext, NavigateFlagContext} fr
 import functions from "../structures/Functions"
 import back from "../assets/icons/back.png"
 import bookmark from "../assets/icons/bookmark.png"
+import unbookmark from "../assets/icons/unbookmark.png"
 import comment from "../assets/icons/comment.png"
 import dictionary from "../assets/icons/dictionary.png"
 import englishToJapanese from "../assets/icons/englishToJapanese.png"
@@ -39,6 +40,7 @@ const PDFControls: React.FunctionComponent<Props> = (props) => {
     const {showThumbnails, setShowThumbnails} = useContext(ShowThumbnailsContext)
     const {mobile, setMobile} = useContext(MobileContext)
     const {navigateFlag, setNavigateFlag} = useContext(NavigateFlagContext)
+    const [saved, setSaved] = useState(false)
     const history = useHistory()
 
     useEffect(() => {
@@ -171,6 +173,27 @@ const PDFControls: React.FunctionComponent<Props> = (props) => {
         }, 500)
     }
 
+    const save = () => {
+        let bookmarkStr = localStorage.getItem("bookmarks")
+        if (!bookmarkStr) bookmarkStr = "{}"
+        const bookmarks = JSON.parse(bookmarkStr)
+        if (bookmarks[props.id]) {
+            delete bookmarks[props.id]
+            setSaved(false)
+        } else {
+            bookmarks[props.id] = true
+            setSaved(true)
+        }
+        localStorage.setItem("bookmarks", JSON.stringify(bookmarks))
+    }
+
+    useEffect(() => {
+        let bookmarkStr = localStorage.getItem("bookmarks")
+        if (!bookmarkStr) bookmarkStr = "{}"
+        const bookmarks = JSON.parse(bookmarkStr)
+        setSaved(bookmarks[props.id] === true)
+    }, [])
+
     return (
         <div className="pdf-controls" onMouseEnter={() => setEnableDrag(false)}>
             <div className="pdf-controls-box">
@@ -195,7 +218,7 @@ const PDFControls: React.FunctionComponent<Props> = (props) => {
             <div className="pdf-controls-box">
                 <img className="pdf-controls-icon" src={back} onClick={triggerBack}/>
                 {/* <img className="pdf-controls-icon" src={info}/> */}
-                {/* <img className="pdf-controls-icon" src={bookmark}/>  */}
+                {!mobile ? <img className="pdf-controls-icon" src={saved ? unbookmark : bookmark} onClick={save}/> : null}
                 {/* <img className="pdf-controls-icon" src={dictionary}/> */}
                 <img className="pdf-controls-icon" src={showEn ? englishToJapanese : japaneseToEnglish} onClick={() => setShowEn((prev: boolean) => !prev)}/>
                 {!mobile ? <img className="pdf-controls-icon" src={support} onClick={triggerSupport}/> : null}
