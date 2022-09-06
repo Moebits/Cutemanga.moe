@@ -6,7 +6,6 @@ import functions from "../structures/Functions"
 import DonationDialog from "../dialogs/DonationDialog"
 import {EnableDragContext} from "../Context"
 import aboutImg from "../assets/images/about.png"
-import studyGuideImg from "../assets/images/studyguide.png"
 import switchingToEnglishImg from "../assets/images/switchingtoenglish.png"
 import readingDirectionImg from "../assets/images/readingdirection.png"
 import officialWebsiteImg from "../assets/images/officialwebsite.png"
@@ -61,14 +60,8 @@ const AboutPage: React.FunctionComponent = (props) => {
                             you are likely to have forgotten them. <br/><br/>
 
                             When you are reading add words that you do not know to the Anki deck for that volume 
-                            (set in Yomichan settings). Your decks should look something like this:
-                        </span>
-                    </div>
-                    <div className="about-row">
-                        <img className="about-img" src={studyGuideImg} style={{width: "50%"}}/>
-                    </div>
-                    <div className="about-row">
-                        <span className="about-text">
+                            (set in Yomichan settings). Your decks should look something like Manga::Volume 1, Manga::Volume 2, etc. <br/><br/>
+
                             At first, you might need to add nearly everything and it might be overwhelming, but 
                             that is normal. As you learn more words you will find yourself adding less words and 
                             creating smaller decks. Also, by default AnkiConnect doesn’t allow duplicate notes, so it basically 
