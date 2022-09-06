@@ -2,7 +2,7 @@ import React, {useEffect, useContext, useState} from "react"
 import {useHistory} from "react-router-dom"
 import {HashLink as Link} from "react-router-hash-link"
 import functions from "../structures/Functions"
-import {EnableDragContext, DonationFlagContext} from "../Context"
+import {EnableDragContext, DonationFlagContext, MobileContext} from "../Context"
 import Draggable from "react-draggable"
 import copy from "../assets/icons/copy.png"
 import "./styles/donationdialog.less"
@@ -11,6 +11,7 @@ import axios from "axios"
 const DonationDialog: React.FunctionComponent = (props) => {
     const {enableDrag, setEnableDrag} = useContext(EnableDragContext)
     const {donationFlag, setDonationFlag} = useContext(DonationFlagContext)
+    const {mobile, setMobile} = useContext(MobileContext)
     const history = useHistory()
     const btc = "3AkW6zDjnuGkecGXdVmtNSRQrVcyZcobBx"
 
@@ -57,7 +58,7 @@ const DonationDialog: React.FunctionComponent = (props) => {
                         <div className="donation-dialog-row">
                             <span className="donation-dialog-coin">Bitcoin:</span>
                             <div className="donation-dialog-address">{btc}</div>
-                            <img className="donation-dialog-icon" src={copy} style={{filter: getFilter()}} onClick={() => triggerCopy()}/>
+                            {!mobile ? <img className="donation-dialog-icon" src={copy} style={{filter: getFilter()}} onClick={() => triggerCopy()}/> : null}
                         </div>
                         <div className="donation-dialog-row">
                             <button onClick={() => click()} className="donation-button">{"Ok"}</button>
