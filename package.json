@@ -5,7 +5,8 @@
   "main": "dist/server.js",
   "scripts": {
     "start": "npm run clean && webpack && node dist/server.js",
-    "build": "npm run clean && webpack",
+    "build": "npm run clean && webpack && npm run redirects",
+    "redirects": "echo \"/* /index.html 200\" | cat > dist/_redirects",
     "server": "webpack && npm run pm2",
     "pm2": "pm2 stop all && pm2 start dist/server.js",
     "clean": "del-cli ./dist"

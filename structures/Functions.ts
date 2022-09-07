@@ -755,7 +755,7 @@ export default class Functions {
             const rgb = hexToRgb(color) as any
             hsl = Functions.rgbToHsl(rgb[0], rgb[1], rgb[2])
         } else {
-            const matches = color.match(/\d+/g)!
+            const matches = color.match(/\d+(\.\d+)?/g)!
             hsl = Functions.rgbToHsl(Number(matches[0]), Number(matches[1]), Number(matches[2]))
             if (matches[3]) a = Number(matches[3])
         }
