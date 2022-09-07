@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from "react"
+import React, {useContext, useEffect, useState, useReducer} from "react"
 import TitleBar from "../components/TitleBar"
 import SideBar from "../components/SideBar"
 import Footer from "../components/Footer"
@@ -12,6 +12,7 @@ import officialWebsiteImg from "../assets/images/officialwebsite.png"
 import "./styles/aboutpage.less"
 
 const AboutPage: React.FunctionComponent = (props) => {
+    const [ignored, forceUpdate] = useReducer(x => x + 1, 0)
     const {enableDrag, setEnableDrag} = useContext(EnableDragContext)
 
     useEffect(() => {
@@ -25,7 +26,7 @@ const AboutPage: React.FunctionComponent = (props) => {
     return (
         <>
         <DonationDialog/>
-        <TitleBar/>
+        <TitleBar rerender={forceUpdate}/>
         <div className="body">
             <div className="content" onMouseEnter={() => setEnableDrag(true)}>
                 <div className="about">

@@ -15,9 +15,9 @@ export const GenreContext = React.createContext<any>(null)
 export const SearchContext = React.createContext<any>(null)
 export const SearchFlagContext = React.createContext<any>(null)
 export const ReverseContext = React.createContext<any>(null)
-export const HueContext = React.createContext<any>(null)
-export const SaturationContext = React.createContext<any>(null)
-export const LightnessContext = React.createContext<any>(null)
+export const SiteHueContext = React.createContext<any>(null)
+export const SiteSaturationContext = React.createContext<any>(null)
+export const SiteLightnessContext = React.createContext<any>(null)
 export const MobileContext = React.createContext<any>(null)
 
 const Context: React.FunctionComponent = (props) => {
@@ -35,14 +35,14 @@ const Context: React.FunctionComponent = (props) => {
     const [search, setSearch] = useState("")
     const [searchFlag, setSearchFlag] = useState(false)
     const [reverse, setReverse] = useState(false)
-    const [hue, setHue] = useState(180)
-    const [saturation, setSaturation] = useState(100)
-    const [lightness, setLightness] = useState(50)
+    const [siteHue, setSiteHue] = useState(180)
+    const [siteSaturation, setSiteSaturation] = useState(100)
+    const [siteLightness, setSiteLightness] = useState(50)
     return (
         <>  
-            <LightnessContext.Provider value={{lightness, setLightness}}>
-            <SaturationContext.Provider value={{saturation, setSaturation}}>
-            <HueContext.Provider value={{hue, setHue}}>
+            <SiteLightnessContext.Provider value={{siteLightness, setSiteLightness}}>
+            <SiteSaturationContext.Provider value={{siteSaturation, setSiteSaturation}}>
+            <SiteHueContext.Provider value={{siteHue, setSiteHue}}>
             <ReverseContext.Provider value={{reverse, setReverse}}>
             <GenreContext.Provider value={{genre, setGenre}}>
             <SearchFlagContext.Provider value={{searchFlag, setSearchFlag}}>
@@ -72,9 +72,9 @@ const Context: React.FunctionComponent = (props) => {
             </SearchFlagContext.Provider>
             </GenreContext.Provider>
             </ReverseContext.Provider>
-            </HueContext.Provider>
-            </SaturationContext.Provider>
-            </LightnessContext.Provider>
+            </SiteHueContext.Provider>
+            </SiteSaturationContext.Provider>
+            </SiteLightnessContext.Provider>
         </>
     )
 }

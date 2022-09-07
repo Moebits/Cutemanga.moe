@@ -8,6 +8,7 @@ import Footer from "../components/Footer"
 import DonationDialog from "../dialogs/DonationDialog"
 
 const HomePage: React.FunctionComponent = (props) => {
+    const [ignored, forceUpdate] = useReducer(x => x + 1, 0)
     const {enableDrag, setEnableDrag} = useContext(EnableDragContext)
     useEffect(() => {
         document.title = "CuteManga: Read Manga with OCR text"
@@ -16,7 +17,7 @@ const HomePage: React.FunctionComponent = (props) => {
     return (
         <>
         <DonationDialog/>
-        <TitleBar/>
+        <TitleBar rerender={forceUpdate}/>
         <div className="body">
             <SideBar/>
             <div className="content" onMouseEnter={() => setEnableDrag(true)}>

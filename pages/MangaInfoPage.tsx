@@ -16,6 +16,7 @@ interface Props {
 }
 
 const MangaInfoPage: React.FunctionComponent<Props> = (props) => {
+    const [ignored, forceUpdate] = useReducer(x => x + 1, 0)
     const {enableDrag, setEnableDrag} = useContext(EnableDragContext)
     const history = useHistory()
 
@@ -33,7 +34,7 @@ const MangaInfoPage: React.FunctionComponent<Props> = (props) => {
     return (
         <>
         <DonationDialog/>
-        <TitleBar/>
+        <TitleBar rerender={forceUpdate}/>
         <div className="body">
             <SideBar/>
             <div className="content" onMouseEnter={() => setEnableDrag(true)}>

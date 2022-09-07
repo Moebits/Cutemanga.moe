@@ -2,7 +2,7 @@ import React, {useContext, useEffect, useState} from "react"
 import {useHistory} from "react-router-dom"
 import {HashLink as Link} from "react-router-hash-link"
 import favicon from "../assets/icons/favicon.png"
-import {EnableDragContext, HueContext, SaturationContext, LightnessContext, MobileContext} from "../Context"
+import {EnableDragContext, SiteHueContext, SiteSaturationContext, SiteLightnessContext, MobileContext} from "../Context"
 import functions from "../structures/Functions"
 import color from "../assets/icons/color.png"
 import Slider from "react-slider"
@@ -32,28 +32,50 @@ const colorList = {
     "--dropdownBG": "rgba(51, 0, 33, 0.95)"
 }
 
-const TitleBar: React.FunctionComponent = (props) => {
+interface Props {
+    rerender: () => void
+}
+
+const TitleBar: React.FunctionComponent<Props> = (props) => {
     const {enableDrag, setEnableDrag} = useContext(EnableDragContext)
-    const {hue, setHue} = useContext(HueContext)
-    const {saturation, setSaturation} = useContext(SaturationContext)
-    const {lightness, setLightness} = useContext(LightnessContext)
+    const {siteHue, setSiteHue} = useContext(SiteHueContext)
+    const {siteSaturation, setSiteSaturation} = useContext(SiteSaturationContext)
+    const {siteLightness, setSiteLightness} = useContext(SiteLightnessContext)
     const [activeDropdown, setActiveDropdown] = useState(false)
     const {mobile, setMobile} = useContext(MobileContext)
     const history = useHistory()
 
-    /*useEffect(() => {
+    useEffect(() => {
+        const savedHue = localStorage.getItem("siteHue")
+        const savedSaturation = localStorage.getItem("siteSaturation")
+        const savedLightness = localStorage.getItem("siteLightness")
+        if (savedHue) setSiteHue(Number(savedHue))
+        if (savedSaturation) setSiteSaturation(Number(savedSaturation))
+        if (savedLightness) setSiteLightness(Number(savedLightness))
+    }, [])
+
+    useEffect(() => {
         if (typeof window === "undefined") return
         for (let i = 0; i < Object.keys(colorList).length; i++) {
             const key = Object.keys(colorList)[i]
             const color = Object.values(colorList)[i]
-            document.documentElement.style.setProperty(key, functions.rotateColor(color, hue, saturation, lightness))
+            document.documentElement.style.setProperty(key, functions.rotateColor(color, siteHue, siteSaturation, siteLightness))
         }
-    }, [hue, saturation, lightness])*/
+        setTimeout(() => {
+            props.rerender()
+        }, 100)
+        localStorage.setItem("siteHue", siteHue)
+        localStorage.setItem("siteSaturation", siteSaturation)
+        localStorage.setItem("siteLightness", siteLightness)
+    }, [siteHue, siteSaturation, siteLightness])
 
     const resetFilters = () => {
-        setHue(180)
-        setSaturation(100)
-        setLightness(50)
+        setSiteHue(180)
+        setSiteSaturation(100)
+        setSiteLightness(50)
+        setTimeout(() => {
+            props.rerender()
+        }, 100)
     }
 
     const getFilter = () => {
@@ -93,25 +115,25 @@ const TitleBar: React.FunctionComponent = (props) => {
                     {/* <span className="titlebar-nav-text" onClick={() => window.open("https://cuteanime.moe", "_blank")}>Anime</span> */}
                     <span className="titlebar-nav-text" onClick={() => history.push("/about")}>About</span>
                 </div>
-                {/* <div className="titlebar-nav-container">
+                <div className="titlebar-nav-container">
                     <img className="titlebar-nav-icon" src={color} style={{filter: getFilter()}} onClick={() => setActiveDropdown((prev) => !prev)}/>
-                </div> */}
+                </div>
             </div>
             <div className={`dropdown ${activeDropdown ? "" : "hide-dropdown"}`}>
                 <div className="dropdown-row">
                     {/* <img className="dropdown-icon" src={hueIcon} style={{filter: getFilter()}}/> */}
                     <span className="dropdown-text">Hue</span>
-                    <Slider className="dropdown-slider" trackClassName="dropdown-slider-track" thumbClassName="dropdown-slider-thumb" onChange={(value) => setHue(value)} min={60} max={300} step={1} value={hue}/>
+                    <Slider className="dropdown-slider" trackClassName="dropdown-slider-track" thumbClassName="dropdown-slider-thumb" onChange={(value) => setSiteHue(value)} min={60} max={300} step={1} value={siteHue}/>
                 </div>
                 <div className="dropdown-row">
                     {/* <img className="dropdown-icon" src={saturationIcon} style={{filter: getFilter()}}/> */}
                     <span className="dropdown-text">Saturation</span>
-                    <Slider className="dropdown-slider" trackClassName="dropdown-slider-track" thumbClassName="dropdown-slider-thumb" onChange={(value) => setSaturation(value)} min={50} max={100} step={1} value={saturation}/>
+                    <Slider className="dropdown-slider" trackClassName="dropdown-slider-track" thumbClassName="dropdown-slider-thumb" onChange={(value) => setSiteSaturation(value)} min={50} max={100} step={1} value={siteSaturation}/>
                 </div>
                 <div className="dropdown-row">
                     {/* <img className="dropdown-icon" src={lightnessIcon} style={{filter: getFilter()}}/> */}
                     <span className="dropdown-text">Lightness</span>
-                    <Slider className="dropdown-slider" trackClassName="dropdown-slider-track" thumbClassName="dropdown-slider-thumb" onChange={(value) => setLightness(value)} min={45} max={55} step={1} value={lightness}/>
+                    <Slider className="dropdown-slider" trackClassName="dropdown-slider-track" thumbClassName="dropdown-slider-thumb" onChange={(value) => setSiteLightness(value)} min={45} max={55} step={1} value={siteLightness}/>
                 </div>
                 <div className="dropdown-row">
                     <button className="dropdown-button" onClick={() => resetFilters()}>Reset</button>

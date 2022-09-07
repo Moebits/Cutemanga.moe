@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from "react"
+import React, {useContext, useEffect, useState, useReducer} from "react"
 import TitleBar from "../components/TitleBar"
 import SideBar from "../components/SideBar"
 import Footer from "../components/Footer"
@@ -10,6 +10,7 @@ import {EnableDragContext} from "../Context"
 import "./styles/tospage.less"
 
 const TermsPage: React.FunctionComponent = (props) => {
+    const [ignored, forceUpdate] = useReducer(x => x + 1, 0)
     const {enableDrag, setEnableDrag} = useContext(EnableDragContext)
     const [onPrivacy, setOnPrivacy] = useState(false)
 
@@ -31,7 +32,7 @@ const TermsPage: React.FunctionComponent = (props) => {
     return (
         <>
         <DonationDialog/>
-        <TitleBar/>
+        <TitleBar rerender={forceUpdate}/>
         <div className="body">
             <div className="content" onMouseEnter={() => setEnableDrag(true)}>
                 <div className="terms-container">
