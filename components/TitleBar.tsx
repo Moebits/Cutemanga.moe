@@ -112,7 +112,7 @@ const TitleBar: React.FunctionComponent<Props> = (props) => {
             <div className="titlebar-container">
                 <div className="titlebar-nav-container">
                     {!mobile ? <span className="titlebar-nav-text" onClick={() => history.push("/manga")}>Manga</span> : null}
-                    {/* <span className="titlebar-nav-text" onClick={() => window.open("https://cuteanime.moe", "_blank")}>Anime</span> */}
+                    <span className="titlebar-nav-text" onClick={() => window.open("https://cuteanime.moe", "_blank")}>Anime</span>
                     <span className="titlebar-nav-text" onClick={() => history.push("/about")}>About</span>
                 </div>
                 <div className="titlebar-nav-container">
