@@ -50,3 +50,6 @@ Start the web server with `npm start`.
 
 All the web server does is load the `index.html` file, there is no real backend so this can be hosted as a static 
 website. 
+
+### Anime Site
+- [Cuteanime.moe](https://github.com/Tenpi/Cuteanime.moe)
