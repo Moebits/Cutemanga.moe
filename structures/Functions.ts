@@ -762,15 +762,32 @@ export default class Functions {
         const newH = Functions.mod(Functions.wrap(hsl[0] - 180 + hue, 0, 360), 360)
         const newS = Functions.mod(Functions.wrap(hsl[1] - 100 + saturation, 0 , 100), 100)
         const newL = Functions.mod(Functions.wrap(hsl[2] - 50 + lightness, 0, 100), 100)
-        if (color === "#240400") {
-            console.log({h: hsl[0], s: hsl[1], l: hsl[2]})
-            console.log({nh: newH, ns: newS, nl: newL})
-        }
         const newRGB = Functions.hslToRgb(newH, newS, newL)
         if (a < 1) {
             return `rgba(${newRGB[0]}, ${newRGB[1]}, ${newRGB[2]}, ${a})`
         } else {
             return Functions.rgbToHex(newRGB[0], newRGB[1], newRGB[2])
         }
+    }
+
+    public static encodeS3URI(filename: string) {
+        return "https://" + filename.split("https://")[1]
+            .replaceAll("+", "%2B")
+            .replaceAll(" ", "+")
+            .replaceAll(":", "%3A")
+            .replaceAll("\"", "%22")
+            .replaceAll("'", "%27")
+            .replaceAll("!", "%21")
+            .replaceAll("?", "%3F")
+            .replaceAll("#", "%23")
+            .replaceAll("$", "%24")
+            .replaceAll("&", "%26")
+            .replaceAll("(", "%28")
+            .replaceAll(")", "%29")
+            .replaceAll("*", "%2A")
+            .replaceAll(",", "%2C")
+            .replaceAll(";", "%3B")
+            .replaceAll("=", "%3D")
+            .replaceAll("@", "%40")
     }
 }

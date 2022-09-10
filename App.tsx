@@ -8,6 +8,7 @@ import MangaInfoPage from "./pages/MangaInfoPage"
 import MangaPage from "./pages/MangaPage"
 import AboutPage from "./pages/AboutPage"
 import TermsPage from "./pages/TermsPage"
+import ViewerPage from "./pages/ViewerPage"
 import $404Page from "./pages/404Page"
 import "./index.less"
 
@@ -57,6 +58,7 @@ const App: React.FunctionComponent = (props) => {
                         <Route exact path={["/", "/home", "/manga"]}><HomePage/></Route>
                         <Route exact path="/manga/:id" render={(props) => <MangaInfoPage {...props}/>}></Route>
                         <Route exact path="/manga/:id/:num" render={(props) => <MangaPage {...props}/>}></Route>
+                        <Route exact path="/viewer"><ViewerPage/></Route>
                         <Route exact path="/about"><AboutPage/></Route>
                         <Route exact path={["/tos", "/terms", "/privacy"]}><TermsPage/></Route>
                         <Route path="*"><$404Page/></Route>

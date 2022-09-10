@@ -47,6 +47,7 @@ const PDFThumbnail = forwardRef(function PDFThumbnail({visible, pageIndex, width
 interface Props {
     id: string
     num: number
+    source?: any
 }
 
 const PDFRenderer: React.FunctionComponent<Props> = (props) => {
@@ -73,6 +74,10 @@ const PDFRenderer: React.FunctionComponent<Props> = (props) => {
     const history = useHistory()
 
     const loadPDF = async () => {
+        if (props.source !== undefined) {
+            setJaPDF(props.source)
+            return
+        }
         const manga = database.find((m) => m.id === props.id)
         if (!manga) return history.push(`/404`)
         const volume = manga.volumes.find((v) => v.volumeNumber === Number(props.num))
@@ -84,6 +89,10 @@ const PDFRenderer: React.FunctionComponent<Props> = (props) => {
     useEffect(() => {
         loadPDF()
     }, [])
+
+    useEffect(() => {
+        loadPDF()
+    }, [props.source])
 
     const pageRefsJA = useMemo(() => {
         return Array.from(new Array(numPagesJA), () => createRef())
