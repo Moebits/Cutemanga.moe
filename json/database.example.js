@@ -23,7 +23,7 @@ export default [
             title: "",
             id: "",
             japaneseTitle: "",
-            artist: "",
+            artists: [""],
             published: "",
             added: "",
             genres: [""],

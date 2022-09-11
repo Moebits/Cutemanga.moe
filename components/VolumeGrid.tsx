@@ -11,7 +11,7 @@ interface Props {
         title: string
         id: string
         japaneseTitle: string
-        artist: string
+        artists: string[]
         published: string
         genres: string[]
         synopsis: string
