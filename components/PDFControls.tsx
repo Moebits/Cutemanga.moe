@@ -26,6 +26,7 @@ import "./styles/pdfcontrols.less"
 
 interface Props {
     id: string
+    num: number
 }
 
 const PDFControls: React.FunctionComponent<Props> = (props) => {

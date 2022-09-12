@@ -20,13 +20,13 @@ const Placeholder = ({width}) => {
     return <div style={{width: width, height: height}}/>
 }
 
-const PDFPage = forwardRef(function PDFPage({visible, pageIndex, width, scale}: any, ref: any) {
+const PDFPage = forwardRef(function PDFPage({visible, pageIndex, width, scale, id}: any, ref: any) {
     const placeholder = <Placeholder width={width}/>
   
     return (
         <div ref={ref} data-page-index={pageIndex}>
           {visible ? (
-            <WrappedPage width={width} pageNumber={pageIndex + 1} loading={placeholder} scale={scale}/>
+            <WrappedPage width={width} pageNumber={pageIndex + 1} loading={placeholder} scale={scale} id={id}/>
           ) : placeholder}
         </div>
       )
@@ -72,6 +72,8 @@ const PDFRenderer: React.FunctionComponent<Props> = (props) => {
     const [thumbsRenderedJA, setThumbsRenderedJA] = useState(0) as any
     const [thumbsRenderedEN, setThumbsRenderedEN] = useState(0) as any
     const history = useHistory()
+
+    const id = `${props.id} ${props.num}`
 
     const loadPDF = async () => {
         if (props.source !== undefined) {
@@ -172,10 +174,18 @@ const PDFRenderer: React.FunctionComponent<Props> = (props) => {
         }
     })
 
+
     const onLoadSuccessJA = async (pdf: any) => {
         setNumPagesJA(pdf.numPages)
         setNumPagesFlag(pdf.numPages)
         setVisibilitiesJA(Array.from(new Array(pdf.numPages), () => false))
+
+        const pageMap = JSON.parse(localStorage.getItem("pageMap") || "{}")
+        const savedPage = pageMap[id]
+        console.log(pageMap)
+        if (savedPage) setTimeout(() => {
+            setNavigateFlag(Number(savedPage))
+        }, 1000) 
     }
 
     const onLoadSuccessEN = async (pdf: any) => {
@@ -288,12 +298,12 @@ const PDFRenderer: React.FunctionComponent<Props> = (props) => {
             {generateThumbnails()}
             <Document renderMode="svg" className={`pdf-document ${!showEn ? "hidden" : ""} ${horizontal ? "horizontal" : ""}`} file={enPDF} onLoadSuccess={onLoadSuccessEN} noData="" loading="">
                 {visibilitiesEN.map((visible: boolean, index: number) => (
-                    <PDFPage className="pdf-page" ref={pageRefsEN[index]} key={`pageEN_${index + 1}`} pageIndex={index} visible={visible} width={getWidth()} scale={getScale()}/>
+                    <PDFPage id={id} className="pdf-page" ref={pageRefsEN[index]} key={`pageEN_${index + 1}`} pageIndex={index} visible={visible} width={getWidth()} scale={getScale()}/>
                 ))}
             </Document>
             <Document renderMode="svg" className={`pdf-document ${showEn ? "hidden" : ""} ${horizontal ? "horizontal" : ""}`} file={jaPDF} onLoadSuccess={onLoadSuccessJA} noData="" loading="">
                 {visibilitiesJA.map((visible: boolean, index: number) => (
-                    <PDFPage className="pdf-page" ref={pageRefsJA[index]} key={`pageJA_${index + 1}`} pageIndex={index} visible={visible} width={getWidth()} scale={getScale()}/>
+                    <PDFPage id={id} className="pdf-page" ref={pageRefsJA[index]} key={`pageJA_${index + 1}`} pageIndex={index} visible={visible} width={getWidth()} scale={getScale()}/>
                 ))}
             </Document>
         </div>

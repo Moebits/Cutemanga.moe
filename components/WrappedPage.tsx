@@ -3,7 +3,7 @@ import {PageContext, HorizontalContext} from "../Context"
 import {Page} from "react-pdf"
 import {useInView} from "react-intersection-observer"
 
-const WrappedPage = ({pageNumber, width, loading, scale}) => {
+const WrappedPage = ({pageNumber, width, loading, scale, id}) => {
     const {page, setPage} = useContext(PageContext)
     const {horizontal, setHorizontal} = useContext(HorizontalContext)
     const {ref, inView} = useInView()
@@ -11,9 +11,19 @@ const WrappedPage = ({pageNumber, width, loading, scale}) => {
     useEffect(() => {
         if (inView) {
             if (horizontal) {
-                if (page !== pageNumber - 1) setPage(pageNumber - 1)
+                if (page !== pageNumber - 1) {
+                    setPage(pageNumber - 1)
+                    const pageMap = JSON.parse(localStorage.getItem("pageMap") || "{}")
+                    pageMap[id] = pageNumber - 1
+                    localStorage.setItem("pageMap", JSON.stringify(pageMap))
+                }
             } else {
-                if (page !== pageNumber) setPage(pageNumber)
+                if (page !== pageNumber) {
+                    setPage(pageNumber)
+                    const pageMap = JSON.parse(localStorage.getItem("pageMap") || "{}")
+                    pageMap[id] = pageNumber
+                    localStorage.setItem("pageMap", JSON.stringify(pageMap))
+                }
             }
         }
     }, [inView])

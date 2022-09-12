@@ -23,7 +23,7 @@ const MangaPage: React.FunctionComponent<Props> = (props) => {
 
     return (
         <>
-        <PDFControls id={id}/>
+        <PDFControls id={id} num={num}/>
         <div className="content" onMouseEnter={() => setEnableDrag(true)}>
             <PDFRenderer id={id} num={num}/>
         </div>

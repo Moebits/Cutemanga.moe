@@ -59,7 +59,7 @@ const ViewerPage: React.FunctionComponent<Props> = (props) => {
 
     return (
         <div onDrop={onDrop}>
-            <PDFControls id={""}/>
+            <PDFControls id={""} num={0}/>
             <div className="content" onMouseEnter={() => setEnableDrag(true)}>
                 <PDFRenderer id={""} num={0} source={source}/>
             </div>
