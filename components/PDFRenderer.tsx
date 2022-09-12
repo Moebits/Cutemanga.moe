@@ -102,9 +102,18 @@ const PDFRenderer: React.FunctionComponent<Props> = (props) => {
         return Array.from(new Array(numPagesEN), () => createRef())
     }, [numPagesEN])
 
+    const getScale = () => {
+        if (!zoom) return 1
+        const value = Number(zoom?.replace("%", "")) / 100
+        if (!value || Number.isNaN(value)) return 1
+        return value
+    }
+    
+    let amount = 1600 / getScale()
+
     const observerOptions = {
         root: rootRef.current,
-        rootMargin: horizontal ? "0px 1600px" : "1600px 0px",
+        rootMargin: horizontal ? `0px ${amount}px` : `${amount}px 0px`,
         threshold: 0.0
     }
 
@@ -138,7 +147,7 @@ const PDFRenderer: React.FunctionComponent<Props> = (props) => {
         const io = new IntersectionObserver(observerCallback, observerOptions)
         setObserver(io)
         return () => io.disconnect()
-   }, [horizontal])
+   }, [horizontal, zoom])
 
     useEffect(() => {
         if (observer) {
@@ -185,13 +194,6 @@ const PDFRenderer: React.FunctionComponent<Props> = (props) => {
 
     const onLoadSuccessThumb = async (pdf: any) => {
         setNumPagesThumb(pdf.numPages)
-    }
-
-    const getScale = () => {
-        if (!zoom) return 1
-        const value = Number(zoom?.replace("%", "")) / 100
-        if (!value || Number.isNaN(value)) return 1
-        return value
     }
 
     const generateThumbnails = () => {
