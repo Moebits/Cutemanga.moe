@@ -96,6 +96,19 @@ const PDFRenderer: React.FunctionComponent<Props> = (props) => {
         loadPDF()
     }, [props.source])
 
+    useEffect(() => {
+        const keyDown = (event: KeyboardEvent) => {
+            if (event.code === "Space") {
+                event.preventDefault()
+                setShowEn((prev: boolean) => !prev)
+            }
+        }
+        window.addEventListener("keydown", keyDown)
+        return () => {
+            window.removeEventListener("keydown", keyDown)
+        }
+    })
+
     const pageRefsJA = useMemo(() => {
         return Array.from(new Array(numPagesJA), () => createRef())
     }, [numPagesJA])

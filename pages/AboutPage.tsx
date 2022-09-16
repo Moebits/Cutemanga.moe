@@ -85,7 +85,8 @@ const AboutPage: React.FunctionComponent = (props) => {
                         <span className="about-text">
                             Because Google Translate is pretty poor at translating vertical text, and because often it just sounds 
                             very unnatural or nonsensical, there is a button to quickly swap to the English translation of the manga. 
-                            You should use this whenever you want to check if you understood a dialogue correctly.      
+                            You should use this whenever you want to check if you understood a dialogue correctly. You can also switch languages 
+                            with the space hotkey. 
                         </span>
                     </div>
                     <div className="about-row">
