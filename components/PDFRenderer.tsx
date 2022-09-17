@@ -126,7 +126,7 @@ const PDFRenderer: React.FunctionComponent<Props> = (props) => {
     
     let amount = 1600 / getScale()
 
-    const observerOptions = {
+    let observerOptions = {
         root: rootRef.current,
         rootMargin: horizontal ? `0px ${amount}px` : `${amount}px 0px`,
         threshold: 0.0
@@ -195,7 +195,6 @@ const PDFRenderer: React.FunctionComponent<Props> = (props) => {
 
         const pageMap = JSON.parse(localStorage.getItem("pageMap") || "{}")
         const savedPage = pageMap[id]
-        console.log(pageMap)
         if (savedPage) setTimeout(() => {
             setNavigateFlag(Number(savedPage))
         }, 1000) 
@@ -264,7 +263,6 @@ const PDFRenderer: React.FunctionComponent<Props> = (props) => {
         }
         if (showThumbnails && horizontal) {
             const thumbnailHeight = Array.from(document.querySelectorAll(".pdf-thumbnail-container")).reduce((p, c) => p.clientHeight > c.clientHeight ? p : c)?.clientHeight
-            console.log(thumbnailHeight)
             if (!thumbnailHeight) return 
             document.querySelectorAll(".pdf-document").forEach((e: any) => {
                 e.style.marginTop = `${thumbnailHeight}px`
