@@ -71,6 +71,9 @@ const SideBar: React.FunctionComponent= (props) => {
                 jsx.push(<span className="sidebar-link" onClick={click}>{genres[i]}</span>)
             }
         }
+        if (sidebarSort === "recent") {
+            return <div className="sidebar-scroll-container">{jsx}</div>
+        }
         return jsx
     }
 
