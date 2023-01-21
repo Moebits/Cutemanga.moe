@@ -1,8 +1,8 @@
 import React, {useContext, useEffect, useState} from "react"
 import {useHistory} from "react-router-dom"
 import {HashLink as Link} from "react-router-hash-link"
-import {EnableDragContext, PageContext, ZoomContext, NumPagesFlagContext, MobileContext,
-ShowEnContext, HorizontalContext, ShowThumbnailsContext, NavigateFlagContext} from "../Context"
+import {EnableDragContext, PageContext, ZoomContext, NumPagesFlagContext, MobileContext, SiteHueContext, SiteLightnessContext, SiteSaturationContext,
+ShowEnContext, HorizontalContext, ShowThumbnailsContext, NavigateFlagContext, InvertContext} from "../Context"
 import functions from "../structures/Functions"
 import back from "../assets/icons/back.png"
 import bookmark from "../assets/icons/bookmark.png"
@@ -21,8 +21,33 @@ import support from "../assets/icons/support.png"
 import zoomIn from "../assets/icons/zoomIn.png"
 import zoomOut from "../assets/icons/zoomOut.png"
 import reset from "../assets/icons/reset.png"
+import color from "../assets/icons/color.png"
+import invertIcon from "../assets/icons/invert.png"
+import invertOnIcon from "../assets/icons/invert-on.png"
 import database from "../json/database"
+import Slider from "react-slider"
 import "./styles/pdfcontrols.less"
+
+const colorList = {
+    "--selection": "rgba(255, 168, 233, 0.302)",
+    "--text": "#fd3a9c",
+    "--text-alt": "#f141cb",
+    "--background": "#380022",
+    "--titlebarBG": "#660013",
+    "--titlebarText": "#fc2cb7",
+    "--titlebarText2": "#b30074",
+    "--titlebarTextAlt": "#9c1c37",
+    "--sidebarBG": "#240400",
+    "--sidebarText": "#b30074",
+    "--sidebarButton": "#a3001b",
+    "--sidebarLink": "#f21c8e",
+    "--sortbarButton": "#b30074",
+    "--sortbarSearchBG": "#570038",
+    "--gridButton": "#f53dab",
+    "--footerBG": "#330021",
+    "--pdfControlsBG": "#c70038",
+    "--dropdownBG": "rgba(51, 0, 33, 0.95)"
+}
 
 interface Props {
     id: string
@@ -41,6 +66,11 @@ const PDFControls: React.FunctionComponent<Props> = (props) => {
     const {showThumbnails, setShowThumbnails} = useContext(ShowThumbnailsContext)
     const {mobile, setMobile} = useContext(MobileContext)
     const {navigateFlag, setNavigateFlag} = useContext(NavigateFlagContext)
+    const {siteHue, setSiteHue} = useContext(SiteHueContext)
+    const {siteSaturation, setSiteSaturation} = useContext(SiteSaturationContext)
+    const {siteLightness, setSiteLightness} = useContext(SiteLightnessContext)
+    const {invert, setInvert} = useContext(InvertContext)
+    const [colorDropdown, setColorDropdown] = useState(false)
     const [saved, setSaved] = useState(false)
     const history = useHistory()
 
@@ -49,11 +79,41 @@ const PDFControls: React.FunctionComponent<Props> = (props) => {
         const savedHorizontal = localStorage.getItem("horizontal")
         const savedShowEn = localStorage.getItem("showEn")
         const savedZoom = localStorage.getItem("zoom")
+        const savedHue = localStorage.getItem("siteHue")
+        const savedSaturation = localStorage.getItem("siteSaturation")
+        const savedLightness = localStorage.getItem("siteLightness")
         if (savedThumbnails) setShowThumbnails(JSON.parse(savedThumbnails))
         if (savedHorizontal) setHorizontal(JSON.parse(savedHorizontal))
         if (savedShowEn) setShowEn(JSON.parse(savedShowEn))
         if (savedZoom) setZoom(savedZoom)
+        if (savedHue) setSiteHue(Number(savedHue))
+        if (savedSaturation) setSiteSaturation(Number(savedSaturation))
+        if (savedLightness) setSiteLightness(Number(savedLightness))
     }, [])
+
+    useEffect(() => {
+        if (typeof window === "undefined") return
+        for (let i = 0; i < Object.keys(colorList).length; i++) {
+            const key = Object.keys(colorList)[i]
+            const color = Object.values(colorList)[i]
+            document.documentElement.style.setProperty(key, functions.rotateColor(color, siteHue, siteSaturation, siteLightness))
+        }
+        setTimeout(() => {
+            // props.rerender()
+        }, 100)
+        localStorage.setItem("siteHue", siteHue)
+        localStorage.setItem("siteSaturation", siteSaturation)
+        localStorage.setItem("siteLightness", siteLightness)
+    }, [siteHue, siteSaturation, siteLightness])
+
+    const resetFilters = () => {
+        setSiteHue(180)
+        setSiteSaturation(100)
+        setSiteLightness(50)
+        setTimeout(() => {
+            // props.rerender()
+        }, 100)
+    }
 
     useEffect(() => {
         if (mobile) {
@@ -218,12 +278,33 @@ const PDFControls: React.FunctionComponent<Props> = (props) => {
             </div> : null}
             <div className="pdf-controls-box">
                 <img className="pdf-controls-icon" src={back} onClick={triggerBack}/>
-                {/* <img className="pdf-controls-icon" src={info}/> */}
+                <img className="pdf-controls-icon" src={invert ? invertOnIcon : invertIcon} onClick={() => setInvert((prev: boolean) => !prev)}/>
                 {!mobile ? <img className="pdf-controls-icon" src={saved ? unbookmark : bookmark} onClick={save}/> : null}
                 {/* <img className="pdf-controls-icon" src={dictionary}/> */}
                 <img className="pdf-controls-icon" src={showEn ? englishToJapanese : japaneseToEnglish} onClick={() => setShowEn((prev: boolean) => !prev)}/>
                 {!mobile ? <img className="pdf-controls-icon" src={support} onClick={triggerSupport}/> : null}
+                <img className="pdf-controls-icon" src={color} onClick={() => setColorDropdown((prev) => !prev)}/>
                 {/* <img className="pdf-controls-icon" src={comment}/> */}
+            </div>
+            <div className={`dropdown ${colorDropdown ? "" : "hide-dropdown"}`} style={{top: "40px"}}>
+                <div className="dropdown-row">
+                    {/* <img className="dropdown-icon" src={hueIcon} style={{filter: getFilter()}}/> */}
+                    <span className="dropdown-text">Hue</span>
+                    <Slider className="dropdown-slider" trackClassName="dropdown-slider-track" thumbClassName="dropdown-slider-thumb" onChange={(value) => setSiteHue(value)} min={60} max={300} step={1} value={siteHue}/>
+                </div>
+                <div className="dropdown-row">
+                    {/* <img className="dropdown-icon" src={saturationIcon} style={{filter: getFilter()}}/> */}
+                    <span className="dropdown-text">Saturation</span>
+                    <Slider className="dropdown-slider" trackClassName="dropdown-slider-track" thumbClassName="dropdown-slider-thumb" onChange={(value) => setSiteSaturation(value)} min={50} max={100} step={1} value={siteSaturation}/>
+                </div>
+                <div className="dropdown-row">
+                    {/* <img className="dropdown-icon" src={lightnessIcon} style={{filter: getFilter()}}/> */}
+                    <span className="dropdown-text">Lightness</span>
+                    <Slider className="dropdown-slider" trackClassName="dropdown-slider-track" thumbClassName="dropdown-slider-thumb" onChange={(value) => setSiteLightness(value)} min={45} max={55} step={1} value={siteLightness}/>
+                </div>
+                <div className="dropdown-row">
+                    <button className="dropdown-button" onClick={() => resetFilters()}>Reset</button>
+                </div>
             </div>
         </div>
     )

@@ -3,7 +3,7 @@ import {SizeMe} from "react-sizeme"
 import {useHistory} from "react-router-dom"
 import {HashLink as Link} from "react-router-hash-link"
 import {EnableDragContext, PageContext, ZoomContext, NumPagesFlagContext, MobileContext,
-ShowEnContext, HorizontalContext, ShowThumbnailsContext, NavigateFlagContext} from "../Context"
+ShowEnContext, HorizontalContext, ShowThumbnailsContext, NavigateFlagContext, InvertContext} from "../Context"
 import {Document, Page, pdfjs, PDFPageProxy} from "react-pdf"
 import functions from "../structures/Functions"
 import WrappedPage from "./WrappedPage"
@@ -20,11 +20,11 @@ const Placeholder = ({width}) => {
     return <div style={{width: width, height: height}}/>
 }
 
-const PDFPage = forwardRef(function PDFPage({visible, pageIndex, width, scale, id}: any, ref: any) {
+const PDFPage = forwardRef(function PDFPage({visible, pageIndex, width, scale, id, style}: any, ref: any) {
     const placeholder = <Placeholder width={width}/>
   
     return (
-        <div ref={ref} data-page-index={pageIndex}>
+        <div ref={ref} data-page-index={pageIndex} style={style}>
           {visible ? (
             <WrappedPage width={width} pageNumber={pageIndex + 1} loading={placeholder} scale={scale} id={id}/>
           ) : placeholder}
@@ -32,14 +32,10 @@ const PDFPage = forwardRef(function PDFPage({visible, pageIndex, width, scale, i
       )
 })
 
-const PDFThumbnail = forwardRef(function PDFThumbnail({visible, pageIndex, width}: any, ref: any) {
-    const placeholder = <Placeholder width={width}/>
-  
+const PDFThumbnail = forwardRef(function PDFThumbnail({visible, pageNumber, width, className, key, onRenderSuccess, style, loading, noData, renderAnnotationLayer, renderTextLayer, onClick}: any, ref: any) {  
     return (
-        <div ref={ref} data-page-index={pageIndex}>
-          {visible ? (
-            <Page width={width} pageNumber={pageIndex + 1} loading={placeholder} renderAnnotationLayer={false} renderTextLayer={false}/>
-          ) : placeholder}
+        <div ref={ref} data-page-index={pageNumber - 1} style={style}>
+          <Page className={className} key={key} onRenderSuccess={onRenderSuccess} width={width} pageNumber={pageNumber} loading={loading} noData={noData} renderAnnotationLayer={renderAnnotationLayer} renderTextLayer={renderTextLayer} onClick={onClick}/>
         </div>
       )
 })
@@ -69,6 +65,7 @@ const PDFRenderer: React.FunctionComponent<Props> = (props) => {
     const {horizontal, setHorizontal} = useContext(HorizontalContext)
     const {showThumbnails, setShowThumbnails} = useContext(ShowThumbnailsContext)
     const {navigateFlag, setNavigateFlag} = useContext(NavigateFlagContext)
+    const {invert, setInvert} = useContext(InvertContext)
     const [thumbsRenderedJA, setThumbsRenderedJA] = useState(0) as any
     const [thumbsRenderedEN, setThumbsRenderedEN] = useState(0) as any
     const history = useHistory()
@@ -224,23 +221,23 @@ const PDFRenderer: React.FunctionComponent<Props> = (props) => {
         const thumbsToRenderEN = Math.min(thumbsRenderedEN + 1, numPagesEN)
         return (
             <>
-            <Document className={`pdf-thumbnail-container ${!showThumbnails || !showEn ? horizontal ? "thumbnail-hidden-horizontal" : "thumbnail-hidden" : ""} ${horizontal ? "thumbnail-horizontal" : ""}`} file={enPDF} noData="" loading="">
+            <Document className={`pdf-thumbnail-container ${!showThumbnails || !showEn ? horizontal ? "thumbnail-hidden-horizontal" : "thumbnail-hidden" : ""} ${horizontal ? "thumbnail-horizontal" : ""}`} file={enPDF} noData="" loading="" options={{disableAutoFetch: true, disableStream: true}}>
                 {Array.from(new Array(thumbsToRenderEN), (el, index) => {
                     const rendering = thumbsToRenderEN === index + 1
                     const lastThumb = numPagesThumb === index + 1
                     const renderNextThumb = rendering && !lastThumb
                     return (
-                      <Page className={`pdf-thumbnail ${page === index + 1 ? "selected" : ""}`} width={100} key={`thumbEN_${index + 1}`} onRenderSuccess={() => renderNextThumb ? onRenderSuccessEN() : null} pageNumber={index + 1} loading="" noData="" renderAnnotationLayer={false} renderTextLayer={false} onClick={() => setNavigateFlag(index + 1)}/>
+                      <PDFThumbnail className={`pdf-thumbnail ${page === index + 1 ? "selected" : ""}`} width={100} key={`thumbEN_${index + 1}`} onRenderSuccess={() => renderNextThumb ? onRenderSuccessEN() : null} pageNumber={index + 1} loading="" noData="" renderAnnotationLayer={false} renderTextLayer={false} onClick={() => setNavigateFlag(index + 1)} style={{filter: invert ? "invert(1) grayscale(1) brightness(1.5)" : ""}}/>
                     )
                 })}
             </Document>
-            <Document className={`pdf-thumbnail-container ${!showThumbnails || showEn ? horizontal ? "thumbnail-hidden-horizontal" : "thumbnail-hidden" : ""} ${horizontal ? "thumbnail-horizontal" : ""}`} file={jaPDF} noData="" loading="">
+            <Document className={`pdf-thumbnail-container ${!showThumbnails || showEn ? horizontal ? "thumbnail-hidden-horizontal" : "thumbnail-hidden" : ""} ${horizontal ? "thumbnail-horizontal" : ""}`} file={jaPDF} noData="" loading="" options={{disableAutoFetch: true, disableStream: true}}>
                 {Array.from(new Array(thumbsToRenderJA), (el, index) => {
                     const rendering = thumbsToRenderJA === index + 1
                     const lastThumb = numPagesThumb === index + 1
                     const renderNextThumb = rendering && !lastThumb
                     return (
-                      <Page className={`pdf-thumbnail ${page === index + 1 ? "selected" : ""}`} width={100} key={`thumbJA_${index + 1}`} onRenderSuccess={() => renderNextThumb ? onRenderSuccessJA() : null} pageNumber={index + 1} loading="" noData="" renderAnnotationLayer={false} renderTextLayer={false} onClick={() => setNavigateFlag(index + 1)}/>
+                      <PDFThumbnail className={`pdf-thumbnail ${page === index + 1 ? "selected" : ""}`} width={100} key={`thumbJA_${index + 1}`} onRenderSuccess={() => renderNextThumb ? onRenderSuccessJA() : null} pageNumber={index + 1} loading="" noData="" renderAnnotationLayer={false} renderTextLayer={false} onClick={() => setNavigateFlag(index + 1)} style={{filter: invert ? "invert(1) grayscale(1) brightness(1.5)" : ""}}/>
                     )
                 })}
             </Document>
@@ -307,14 +304,14 @@ const PDFRenderer: React.FunctionComponent<Props> = (props) => {
     return (
         <div className={`pdf-renderer drag ${horizontal ? "pdf-renderer-horizontal" : ""}`} ref={rootRef} style={{maxHeight: horizontal ? 773 : 1600}}>
             {generateThumbnails()}
-            <Document renderMode="svg" className={`pdf-document ${!showEn ? "hidden" : ""} ${horizontal ? "horizontal" : ""}`} file={enPDF} onLoadSuccess={onLoadSuccessEN} noData="" loading="">
+            <Document renderMode="svg" className={`pdf-document ${!showEn ? "hidden" : ""} ${horizontal ? "horizontal" : ""}`} file={enPDF} onLoadSuccess={onLoadSuccessEN} noData="" loading="" options={{disableAutoFetch: true, disableStream: true}}>
                 {visibilitiesEN.map((visible: boolean, index: number) => (
-                    <PDFPage id={id} className="pdf-page" ref={pageRefsEN[index]} key={`pageEN_${index + 1}`} pageIndex={index} visible={visible} width={getWidth()} scale={getScale()}/>
+                    <PDFPage id={id} className="pdf-page" ref={pageRefsEN[index]} key={`pageEN_${index + 1}`} pageIndex={index} visible={visible} width={getWidth()} scale={getScale()} style={{filter: invert ? "invert(1) grayscale(1) brightness(1.5)" : ""}}/>
                 ))}
             </Document>
-            <Document renderMode="svg" className={`pdf-document ${showEn ? "hidden" : ""} ${horizontal ? "horizontal" : ""}`} file={jaPDF} onLoadSuccess={onLoadSuccessJA} noData="" loading="">
+            <Document renderMode="svg" className={`pdf-document ${showEn ? "hidden" : ""} ${horizontal ? "horizontal" : ""}`} file={jaPDF} onLoadSuccess={onLoadSuccessJA} noData="" loading="" options={{disableAutoFetch: true, disableStream: true}}>
                 {visibilitiesJA.map((visible: boolean, index: number) => (
-                    <PDFPage id={id} className="pdf-page" ref={pageRefsJA[index]} key={`pageJA_${index + 1}`} pageIndex={index} visible={visible} width={getWidth()} scale={getScale()}/>
+                    <PDFPage id={id} className="pdf-page" ref={pageRefsJA[index]} key={`pageJA_${index + 1}`} pageIndex={index} visible={visible} width={getWidth()} scale={getScale()} style={{filter: invert ? "invert(1) grayscale(1) brightness(1.5)" : ""}}/>
                 ))}
             </Document>
         </div>

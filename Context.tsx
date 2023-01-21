@@ -18,6 +18,7 @@ export const ReverseContext = React.createContext<any>(null)
 export const SiteHueContext = React.createContext<any>(null)
 export const SiteSaturationContext = React.createContext<any>(null)
 export const SiteLightnessContext = React.createContext<any>(null)
+export const InvertContext = React.createContext<any>(null)
 export const MobileContext = React.createContext<any>(null)
 
 const Context: React.FunctionComponent = (props) => {
@@ -38,8 +39,10 @@ const Context: React.FunctionComponent = (props) => {
     const [siteHue, setSiteHue] = useState(180)
     const [siteSaturation, setSiteSaturation] = useState(100)
     const [siteLightness, setSiteLightness] = useState(50)
+    const [invert, setInvert] = useState(false)
     return (
         <>  
+            <InvertContext.Provider value={{invert, setInvert}}>
             <SiteLightnessContext.Provider value={{siteLightness, setSiteLightness}}>
             <SiteSaturationContext.Provider value={{siteSaturation, setSiteSaturation}}>
             <SiteHueContext.Provider value={{siteHue, setSiteHue}}>
@@ -75,6 +78,7 @@ const Context: React.FunctionComponent = (props) => {
             </SiteHueContext.Provider>
             </SiteSaturationContext.Provider>
             </SiteLightnessContext.Provider>
+            </InvertContext.Provider>
         </>
     )
 }

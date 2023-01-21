@@ -47,7 +47,7 @@ const Footer: React.FunctionComponent = (props) => {
                         {!mobile ? <span className="footer-link-text">Donate</span> : null}
                     </div>
                 </div>
-                <span className="footer-link-text-small">©{new Date().getFullYear()} Moepi</span>
+                <span className="footer-link-text-small">©{new Date().getFullYear()} CuteManga</span>
             </div>
             <div className="footer-row">
                 <span className="footer-text">
