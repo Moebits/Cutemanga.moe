@@ -9,6 +9,7 @@ import functions from "../structures/Functions"
 import WrappedPage from "./WrappedPage"
 import * as pdfjsWorker from "pdfjs-dist/legacy/build/pdf.worker.entry"
 import database from "../json/database"
+import hiddenDatabase from "../json/database-hidden"
 import axios from "axios"
 import "./styles/pdfrenderer.less"
 
@@ -32,7 +33,7 @@ const PDFPage = forwardRef(function PDFPage({visible, pageIndex, width, scale, i
       )
 })
 
-const PDFThumbnail = forwardRef(function PDFThumbnail({visible, pageNumber, width, className, key, onRenderSuccess, style, loading, noData, renderAnnotationLayer, renderTextLayer, onClick}: any, ref: any) {  
+const PDFThumbnail = forwardRef(function PDFThumbnail({pageNumber, width, className, key, onRenderSuccess, style, loading, noData, renderAnnotationLayer, renderTextLayer, onClick}: any, ref: any) {  
     return (
         <div ref={ref} data-page-index={pageNumber - 1} style={style}>
           <Page className={className} key={key} onRenderSuccess={onRenderSuccess} width={width} pageNumber={pageNumber} loading={loading} noData={noData} renderAnnotationLayer={renderAnnotationLayer} renderTextLayer={renderTextLayer} onClick={onClick}/>
@@ -77,9 +78,10 @@ const PDFRenderer: React.FunctionComponent<Props> = (props) => {
             setJaPDF(props.source)
             return
         }
-        const manga = database.find((m) => m.id === props.id)
+        let manga = database.find((m) => m.id === props.id)
+        if (!manga) manga = hiddenDatabase.find((m) => m.id === props.id)
         if (!manga) return history.push(`/404`)
-        const volume = manga.volumes.find((v) => v.volumeNumber === Number(props.num))
+        const volume = manga.volumes.find((v: any) => v.volumeNumber === Number(props.num))
         if (!volume) return history.push(`/404`)
         setJaPDF(volume.japaneseSource)
         setEnPDF(volume.englishSource)
@@ -100,9 +102,9 @@ const PDFRenderer: React.FunctionComponent<Props> = (props) => {
                 setShowEn((prev: boolean) => !prev)
             }
         }
-        window.addEventListener("keydown", keyDown)
+        document.addEventListener("keydown", keyDown)
         return () => {
-            window.removeEventListener("keydown", keyDown)
+            document.removeEventListener("keydown", keyDown)
         }
     })
 
@@ -220,7 +222,8 @@ const PDFRenderer: React.FunctionComponent<Props> = (props) => {
         const thumbsToRenderJA = Math.min(thumbsRenderedJA + 1, numPagesJA)
         const thumbsToRenderEN = Math.min(thumbsRenderedEN + 1, numPagesEN)
         return (
-            <>
+            // @ts-ignore
+            <div onClick={((e) => {showEn ? e.currentTarget.firstElementChild?.focus() : e.currentTarget.lastElementChild?.focus(); e.stopPropagation()})}>
             <Document className={`pdf-thumbnail-container ${!showThumbnails || !showEn ? horizontal ? "thumbnail-hidden-horizontal" : "thumbnail-hidden" : ""} ${horizontal ? "thumbnail-horizontal" : ""}`} file={enPDF} noData="" loading="" options={{disableAutoFetch: true, disableStream: true}}>
                 {Array.from(new Array(thumbsToRenderEN), (el, index) => {
                     const rendering = thumbsToRenderEN === index + 1
@@ -241,7 +244,7 @@ const PDFRenderer: React.FunctionComponent<Props> = (props) => {
                     )
                 })}
             </Document>
-            </>
+            </div>
         )
     }
 
@@ -302,7 +305,7 @@ const PDFRenderer: React.FunctionComponent<Props> = (props) => {
     }
 
     return (
-        <div className={`pdf-renderer drag ${horizontal ? "pdf-renderer-horizontal" : ""}`} ref={rootRef} style={{maxHeight: horizontal ? 773 : 1600}}>
+        <div className={`pdf-renderer drag ${horizontal ? "pdf-renderer-horizontal" : ""}`} ref={rootRef} style={{maxHeight: horizontal ? 773 : 1600}} onClick={((e) => e.currentTarget.focus())}>
             {generateThumbnails()}
             <Document renderMode="svg" className={`pdf-document ${!showEn ? "hidden" : ""} ${horizontal ? "horizontal" : ""}`} file={enPDF} onLoadSuccess={onLoadSuccessEN} noData="" loading="" options={{disableAutoFetch: true, disableStream: true}}>
                 {visibilitiesEN.map((visible: boolean, index: number) => (

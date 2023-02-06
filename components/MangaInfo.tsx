@@ -59,7 +59,7 @@ const MangaInfo: React.FunctionComponent<Props> = (props) => {
                     </div>
                     <div className="manga-info-text-row">
                         <span className="manga-info-text-category">Synopsis:</span>
-                        <span className="manga-info-text-content">{props.info.synopsis} <span className="manga-info-text-content-link" onClick={() => window.open(props.info.synopsisSource, "_blank")}>[{functions.websiteName(props.info.synopsisSource)}]</span></span>
+                        <span className="manga-info-text-content">{props.info.synopsis} {props.info.synopsisSource ? <span className="manga-info-text-content-link" onClick={() => window.open(props.info.synopsisSource, "_blank")}>[{functions.websiteName(props.info.synopsisSource)}]</span> : null}</span>
                     </div>
                 </div>
             </div>

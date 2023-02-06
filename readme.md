@@ -1,5 +1,8 @@
 # Cutemanga.moe
 
+**Update - 2/5/2023**
+To save on hosting costs I have taken down the online version of website. For the time being only the locally run version is supported.
+
 Cutemanga is a website where you can read manga with selectable text (OCR) with a dictionary extension like Yomichan. It is a fun way to study Japanese. The manga is 
 generated with [MangaOCR](https://github.com/kha-white/manga-ocr), and specifically we use [Mokuro](https://github.com/kha-white/mokuro) 
 and [Mokuro2Pdf](https://github.com/Kartoffel0/Mokuro2Pdf) scripts to OCR the manga and convert them to PDF files. 
@@ -50,6 +53,8 @@ Start the web server with `npm start`.
 
 All the web server does is load the `index.html` file, there is no real backend so this can be hosted as a static 
 website. 
+
+To load files from your local hard drive edit the pathname for the route `/Manga/*` in `server.tsx`.
 
 ### Anime Site
 - [Cuteanime.moe](https://github.com/Tenpi/Cuteanime.moe)

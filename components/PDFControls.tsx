@@ -25,6 +25,7 @@ import color from "../assets/icons/color.png"
 import invertIcon from "../assets/icons/invert.png"
 import invertOnIcon from "../assets/icons/invert-on.png"
 import database from "../json/database"
+import hiddenDatabase from "../json/database-hidden"
 import Slider from "react-slider"
 import "./styles/pdfcontrols.less"
 
@@ -166,7 +167,8 @@ const PDFControls: React.FunctionComponent<Props> = (props) => {
     }
 
     const triggerSupport = () => {
-        const manga = database.find((m) => m.id === props.id)
+        let manga = database.find((m) => m.id === props.id)
+        if (!manga) manga = hiddenDatabase.find((m) => m.id === props.id)
         if (manga) {
             window.open(manga.website, "_blank")
         }
@@ -256,7 +258,7 @@ const PDFControls: React.FunctionComponent<Props> = (props) => {
     }, [])
 
     return (
-        <div className="pdf-controls" onMouseEnter={() => setEnableDrag(false)}>
+        <div className="pdf-controls" onMouseEnter={() => setEnableDrag(true)}>
             <div className="pdf-controls-box">
                 {!mobile ? <img className="pdf-controls-icon-small" src={hamburger} onClick={() => setShowThumbnails((prev: boolean) => !prev)}/> : null}
                 <div className="pdf-controls-page-container">

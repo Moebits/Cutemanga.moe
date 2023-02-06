@@ -10,7 +10,11 @@ import database from "../json/database"
 import dbFunctions from "../structures/DatabaseFunctions"
 import "./styles/mangagrid.less"
 
-const MangaGrid: React.FunctionComponent = (props) => {
+interface Props {
+    hidden?: boolean
+}
+
+const MangaGrid: React.FunctionComponent<Props> = (props) => {
     const {enableDrag, setEnableDrag} = useContext(EnableDragContext)
     const {search, setSearch} = useContext(SearchContext)
     const {searchFlag, setSearchFlag} = useContext(SearchFlagContext)
@@ -22,7 +26,7 @@ const MangaGrid: React.FunctionComponent = (props) => {
     const history = useHistory()
 
     const updateMangaList = () => {
-        const list = dbFunctions.getSorted(search, genre, sort, reverse)
+        const list = props.hidden ? dbFunctions.getSortedHidden(search, genre, sort, reverse) : dbFunctions.getSorted(search, genre, sort, reverse)
         setMangaList(list)
     }
 

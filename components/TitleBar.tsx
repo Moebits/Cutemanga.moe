@@ -34,6 +34,7 @@ const colorList = {
 
 interface Props {
     rerender: () => void
+    hidden?: boolean
 }
 
 const TitleBar: React.FunctionComponent<Props> = (props) => {
@@ -111,8 +112,8 @@ const TitleBar: React.FunctionComponent<Props> = (props) => {
             </div>
             <div className="titlebar-container">
                 <div className="titlebar-nav-container">
-                    {!mobile ? <span className="titlebar-nav-text" onClick={() => history.push("/manga")}>Manga</span> : null}
-                    {!mobile ? <span className="titlebar-nav-text" onClick={() => window.open("https://cuteanime.moe", "_blank")}>Anime</span> : null}
+                    {!mobile ? <span className="titlebar-nav-text" onClick={() => props.hidden ? history.push("/hidden") : history.push("/manga")}>Manga</span> : null}
+                    {!mobile ? <span className="titlebar-nav-text" onClick={() => window.open(functions.isLocalHost() ? "http://localhost:8081" : "https://cuteanime.moe", "_blank")}>Anime</span> : null}
                     <span className="titlebar-nav-text" onClick={() => history.push("/about")}>About</span>
                 </div>
                 {!mobile ? 

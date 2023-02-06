@@ -10,6 +10,7 @@ import VolumeGrid from "../components/VolumeGrid"
 import DonationDialog from "../dialogs/DonationDialog"
 import functions from "../structures/Functions"
 import database from "../json/database"
+import hiddenDatabase from "../json/database-hidden"
 
 interface Props {
     match?: any
@@ -21,7 +22,8 @@ const MangaInfoPage: React.FunctionComponent<Props> = (props) => {
     const history = useHistory()
 
     const id = props.match.params.id
-    const info = database.find((m) => m.id === id)
+    let info = database.find((m) => m.id === id)
+    if (!info) info = hiddenDatabase.find((m) => m.id === id)
     if (!info) {
         history.push(`/404`)
         return null
@@ -34,9 +36,9 @@ const MangaInfoPage: React.FunctionComponent<Props> = (props) => {
     return (
         <>
         <DonationDialog/>
-        <TitleBar rerender={forceUpdate}/>
+        <TitleBar rerender={forceUpdate} hidden={info.hidden}/>
         <div className="body">
-            <SideBar/>
+            <SideBar hidden={info.hidden}/>
             <div className="content" onMouseEnter={() => setEnableDrag(true)}>
                 <MangaInfo info={info}/>
                 <VolumeGrid info={info}/>

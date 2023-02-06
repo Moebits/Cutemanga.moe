@@ -9,7 +9,11 @@ import dbFunctions from "../structures/DatabaseFunctions"
 import functions from "../structures/Functions"
 import "./styles/sidebar.less"
 
-const SideBar: React.FunctionComponent= (props) => {
+interface Props {
+    hidden?: boolean
+}
+
+const SideBar: React.FunctionComponent<Props> = (props) => {
     const {enableDrag, setEnableDrag} = useContext(EnableDragContext)
     const {search, setSearch} = useContext(SearchContext)
     const {searchFlag, setSearchFlag} = useContext(SearchFlagContext)
@@ -57,7 +61,7 @@ const SideBar: React.FunctionComponent= (props) => {
     const generateLinksJSX = () => {
         let jsx = [] as any
         if (sidebarSort === "recent") {
-            const recent = dbFunctions.getRecent()
+            const recent = props.hidden ? dbFunctions.getRecentHidden() : dbFunctions.getRecent()
             for (let i = 0; i < recent.length; i++) {
                 jsx.push(<span className="sidebar-link" onClick={() => history.push(`/manga/${recent[i].id}`)}>{recent[i].title}</span>)
             }

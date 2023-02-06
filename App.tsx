@@ -4,6 +4,7 @@ import Context, {EnableDragContext, MobileContext} from "./Context"
 import axios from "axios"
 import functions from "./structures/Functions"
 import HomePage from "./pages/HomePage"
+import HiddenPage from "./pages/HiddenPage"
 import MangaInfoPage from "./pages/MangaInfoPage"
 import MangaPage from "./pages/MangaPage"
 import AboutPage from "./pages/AboutPage"
@@ -59,6 +60,7 @@ const App: React.FunctionComponent = (props) => {
                         <Route exact path="/manga/:id" render={(props) => <MangaInfoPage {...props}/>}></Route>
                         <Route exact path="/manga/:id/:num" render={(props) => <MangaPage {...props}/>}></Route>
                         <Route exact path="/viewer"><ViewerPage/></Route>
+                        <Route exact path="/hidden"><HiddenPage/></Route>
                         <Route exact path="/about"><AboutPage/></Route>
                         <Route exact path={["/tos", "/terms", "/privacy"]}><TermsPage/></Route>
                         <Route path="*"><$404Page/></Route>
