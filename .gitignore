@@ -3,4 +3,4 @@
 node_modules
 dist
 json/database.js
-json/database-nsfw.js
+json/database-hidden.js
