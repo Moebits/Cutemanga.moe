@@ -15,8 +15,8 @@ const colorList = {
     "--selection": "rgba(255, 168, 233, 0.302)",
     "--text": "#fd3a9c",
     "--text-alt": "#f141cb",
-    "--background": "#380022",
-    "--titlebarBG": "#660013",
+    "--background": "#280119",
+    "--titlebarBG": "#2f010a",
     "--titlebarText": "#fc2cb7",
     "--titlebarText2": "#b30074",
     "--titlebarTextAlt": "#9c1c37",
@@ -27,7 +27,7 @@ const colorList = {
     "--sortbarButton": "#b30074",
     "--sortbarSearchBG": "#570038",
     "--gridButton": "#f53dab",
-    "--footerBG": "#330021",
+    "--footerBG": "#28011b",
     "--pdfControlsBG": "#c70038",
     "--dropdownBG": "rgba(51, 0, 33, 0.95)"
 }
