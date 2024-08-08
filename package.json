@@ -25,12 +25,11 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/Tenpi/Cutemanga.moe"
+    "url": "https://github.com/Moebits/Cutemanga.moe"
   },
-  "author": "Moepi",
+  "author": "Moebits",
   "license": "MIT",
   "devDependencies": {
-    "@tenpi/tslint": "^1.1.0",
     "@types/bcrypt": "^3.0.0",
     "@types/cors": "^2.8.12",
     "@types/express": "^4.17.7",
